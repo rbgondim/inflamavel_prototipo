@@ -13,7 +13,7 @@ info.html         escolha de sede + quem somos, filmografia, fundadores, impress
 
 css/site.css      folha única: tokens, componentes, responsivo
 js/heat.js        campo de ruído do gradiente da marca (compartilhado)
-js/nav.js         header, menu e alternância PT/EN (compartilhado)
+js/nav.js         header e alternância PT/EN (compartilhado)
 js/home.js        splash + carrossel
 js/projetos.js    revelação no scroll + amostragem de cor das imagens
 js/projeto.js     preenche a página a partir do slug + carrossel do hero
@@ -22,6 +22,8 @@ js/info.js        porta de entrada da sede
 data/films.js     os seis filmes — usado por projeto.html
 assets/img/       imagens (9)
 assets/fonts/     Geist, Serial B, Serial B Blur
+
+dev-server.py     servidor local sem cache
 vercel.json       cabeçalhos de cache
 ```
 
@@ -41,7 +43,7 @@ detalhe é template:
 - `projetos.html` (o card na listagem)
 - `data/films.js` (a página de detalhe)
 
-O header, o menu e o rodapé estão repetidos nas quatro páginas. Isso é
+O header e o rodapé estão repetidos nas quatro páginas. Isso é
 intencional: sem build, a alternativa seria injetá-los por JS, e aí o Figma
 importaria páginas com o topo vazio.
 
@@ -61,12 +63,25 @@ No topo de `js/home.js`:
 ## Rodar local
 
 ```bash
-python3 -m http.server 4322
+python3 dev-server.py
 ```
 
 Depois abra `http://localhost:4322`. Serve por HTTP, não por `file://` — a
 amostragem de cor das imagens em `projetos.html` usa canvas e é bloqueada em
 `file://`.
+
+Use este servidor e não o `python3 -m http.server`: o embutido não manda
+`Cache-Control`, o navegador cacheia CSS e JS por conta própria, e você fica
+editando arquivo e vendo a versão antiga sem nenhum aviso.
+
+## Cache
+
+Local: use `dev-server.py`, que manda `no-store`.
+
+Produção: o `vercel.json` faz o HTML, o CSS e o JS revalidarem a cada
+carregamento — assim ninguém fica com a folha de estilo antiga depois de um
+deploy. As fontes são imutáveis (nunca mudam de conteúdo) e as imagens
+revalidam de hora em hora.
 
 ## De onde isto veio
 
@@ -85,9 +100,6 @@ git show 50b76ae:index.html > /tmp/bundle-original.html
 
 ### O que mudou de comportamento
 
-- **O menu abre.** No bundle o overlay existia mas nenhum botão o acionava. Agora
-  tem hambúrguer no header — e é assim que se navega no mobile, onde a nav
-  horizontal fica escondida.
 - **Voltar para a home não repete o splash.** Antes, clicar em "Home" de qualquer
   página reiniciava a animação inteira.
 - **A sede escolhida em Info persiste na sessão.**
@@ -102,6 +114,9 @@ git show 50b76ae:index.html > /tmp/bundle-original.html
 - PT / EN é só estado visual, nada é traduzido. O gancho para quando houver
   tradução é o evento `inf:lang`, disparado em `js/nav.js`.
 - "Em Desenvolvimento" ainda aponta para `#`.
+- O overlay de menu em tela cheia (`.menu` nos HTMLs, `initMenu` em `js/nav.js`)
+  continua sem gatilho: o hambúrguer que o abria foi removido do header. É código
+  morto até alguém religar.
 - Instagram, Vimeo e Contato ainda apontam para `#`.
 
 ## Pendências

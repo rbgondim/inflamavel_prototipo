@@ -25,7 +25,11 @@
   --font-display: 'Serial B', Georgia, 'Times New Roman', serif;
   --font-display-blur: 'Serial B Blur', 'Serial B', Georgia, serif;
   --font-body: 'Geist', -apple-system, BlinkMacSystemFont, sans-serif;
-  --font-label: 'Bahnschrift', 'DIN Alternate', 'Geist', sans-serif;
+  /* Os labels caixa-alta usavam Bahnschrift (Windows) com DIN Alternate (macOS)
+     de reserva, então o header trocava de fonte conforme o sistema do visitante
+     enquanto o resto do site ficava em Geist. Agora é Geist em todo lugar — é a
+     única das três que vai embutida no repo. */
+  --font-label: 'Geist', -apple-system, BlinkMacSystemFont, sans-serif;
 
   /* ritmo */
   --pad-x: clamp(20px, 4vw, 56px);
@@ -126,7 +130,6 @@ button { font: inherit; color: inherit; }
   justify-content: space-between;
   gap: clamp(20px, 4vw, 64px);
   background: var(--ink);
-  border-bottom: 1px solid rgba(255, 255, 255, .16);
   padding: 14px var(--pad-x);
   transition: transform .45s var(--ease-reveal);
 }
@@ -142,7 +145,7 @@ button { font: inherit; color: inherit; }
 
 .site-header__logo { display: flex; align-items: center; flex: none; }
 .site-header__logo canvas {
-  height: clamp(34px, 3.6vw, 52px);
+  height: clamp(58px, 6.6vw, 96px);
   width: auto;
   display: block;
 }
@@ -155,15 +158,15 @@ button { font: inherit; color: inherit; }
   gap: clamp(18px, 2.6vw, 40px);
   font-family: var(--font-label);
   font-size: 13px;
-  font-weight: 600;
+  font-weight: 400;
   letter-spacing: .26em;
   text-transform: uppercase;
 }
 .nav__link {
   text-decoration: none;
-  filter: brightness(1.25) saturate(1.1);
+  color: var(--heat-4);
   opacity: .95;
-  transition: opacity .3s, filter .3s;
+  transition: opacity .3s;
 }
 .nav__link:hover { opacity: 1; }
 
@@ -173,19 +176,19 @@ button { font: inherit; color: inherit; }
   gap: 8px;
   font-family: var(--font-label);
   font-size: 13px;
-  font-weight: 600;
+  font-weight: 400;
   letter-spacing: .22em;
   text-transform: uppercase;
 }
 .lang__btn {
   background: none; border: none; padding: 0; margin: 0;
   cursor: pointer;
-  color: rgba(255, 255, 255, .4);
+  color: rgba(236, 75, 153, .45);
   letter-spacing: inherit;
   transition: color .3s;
 }
-.lang__btn.is-on { color: var(--white); }
-.lang__sep { color: rgba(255, 255, 255, .35); }
+.lang__btn.is-on { color: var(--heat-4); }
+.lang__sep { color: rgba(236, 75, 153, .4); }
 
 /* ---------- menu (overlay) ---------- */
 .menu {
@@ -275,9 +278,11 @@ button { font: inherit; color: inherit; }
   display: flex;
   flex-wrap: wrap;
   gap: 56px;
-  justify-content: space-between;
+  justify-content: flex-end;
   align-items: flex-start;
 }
+/* o rodapé de projeto.html ainda tem o logo à esquerda: lá as pontas se afastam */
+.site-footer__top:has(.site-footer__logo) { justify-content: space-between; }
 .site-footer__mark {
   font-family: var(--font-label);
   font-size: 11px;
@@ -455,27 +460,6 @@ button { font: inherit; color: inherit; }
 /* =========================================================================
    PROJETOS (listagem)
    ========================================================================= */
-.page-head {
-  display: flex;
-  align-items: baseline;
-  justify-content: space-between;
-  gap: 20px;
-  padding: clamp(40px, 7vh, 90px) var(--pad-x) clamp(22px, 3vh, 38px);
-  border-bottom: 1px solid rgba(255, 255, 255, .1);
-}
-.page-head__title {
-  font-family: var(--font-display);
-  font-weight: 700;
-  font-size: clamp(38px, 6vw, 86px);
-  line-height: .95;
-  letter-spacing: -.01em;
-}
-.page-head__meta {
-  font-size: 11px; font-weight: 500; letter-spacing: .28em;
-  text-transform: uppercase; color: rgba(255, 255, 255, .55);
-  white-space: nowrap;
-}
-
 .film {
   position: relative;
   display: block;
@@ -484,7 +468,6 @@ button { font: inherit; color: inherit; }
   overflow: hidden;
   text-decoration: none;
   color: var(--white);
-  border-bottom: 1px solid rgba(255, 255, 255, .1);
 }
 .film__img {
   position: absolute; inset: 0;
@@ -706,7 +689,7 @@ button { font: inherit; color: inherit; }
   text-align: left; cursor: pointer; width: fit-content;
   font-family: var(--font-display-blur);
   font-weight: 700;
-  font-size: clamp(52px, 10vw, 150px);
+  font-size: clamp(39px, 7.5vw, 112px);
   line-height: 1.02;
   letter-spacing: -.01em;
   color: var(--white);
@@ -816,7 +799,7 @@ button { font: inherit; color: inherit; }
 .info-footer__bottom {
   margin-top: clamp(48px, 7vh, 90px);
   display: flex; flex-wrap: wrap; gap: 20px;
-  justify-content: space-between; align-items: flex-end;
+  justify-content: flex-end; align-items: flex-end;
 }
 .info-footer__links {
   display: flex; gap: 26px;
@@ -837,9 +820,6 @@ button { font: inherit; color: inherit; }
   .site-header__right { gap: 16px; flex-wrap: wrap; }
   .nav { gap: 18px; font-size: 12px; letter-spacing: .16em; }
   .lang { font-size: 12px; }
-
-  .page-head { flex-direction: column; align-items: flex-start; gap: 12px; }
-  .page-head__meta { white-space: normal; }
 
   .film { height: clamp(420px, 78vh, 720px); }
   .film__synopsis { max-width: 100%; }
