@@ -145,7 +145,7 @@ button { font: inherit; color: inherit; }
 
 .site-header__logo { display: flex; align-items: center; flex: none; }
 .site-header__logo canvas {
-  height: clamp(58px, 6.6vw, 96px);
+  height: clamp(50px, 5.7vw, 84px);
   width: auto;
   display: block;
 }
