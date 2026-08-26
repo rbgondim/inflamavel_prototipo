@@ -19,6 +19,17 @@ window.INF = window.INF || {};
      comportamento antigo (splash em todo carregamento), troque para false. */
   var SPLASH_ONCE_PER_SESSION = true;
 
+  /* Palavra que substitui o logo no hover do splash. ENTER_SIZE é a fração
+     da altura do canvas usada como corpo da fonte. */
+  var ENTER_LABEL = 'Entrar';
+  var ENTER_SIZE = 0.333;
+
+  /* O PNG do logo tem o acento do Á ocupando o topo (y 114–246) e as letras em
+     y 328–757, num canvas de 945. Centrado no canvas, o conjunto fica baixo em
+     relação à palavra Entrar. Este deslocamento sobe o logo para que o centro
+     das LETRAS (ignorando o acento) coincida com o centro do Entrar. */
+  var LOGO_Y_OFFSET = -93;
+
   var SX = 3.4, SY = 2.0; /* escala do campo no splash — mais largo que o do header */
 
   function Home() {
@@ -144,7 +155,7 @@ window.INF = window.INF || {};
   };
 
   /* O logo do splash é o gradiente recortado pela silhueta do PNG. No hover a
-     silhueta faz crossfade para a palavra ENTRAR. */
+     silhueta faz crossfade para a palavra ENTER_LABEL. */
   Home.prototype.drawLogo = function (t, mx, my) {
     var cv = this.logoCanvas;
     if (!cv || !this.logoReady) return;
@@ -179,7 +190,7 @@ window.INF = window.INF || {};
     ctx.imageSmoothingEnabled = true;
     ctx.drawImage(lf, 0, 0, cv.width, cv.height);
 
-    /* p vai de 0 (logo) a 1 (ENTRAR), com easing exponencial */
+    /* p vai de 0 (logo) a 1 (palavra), com easing exponencial */
     var target = this.hoverLogo ? 1 : 0;
     this._hp += (target - this._hp) * 0.16;
     var p = this._hp;
@@ -194,17 +205,17 @@ window.INF = window.INF || {};
 
     if (p < 0.995) {
       mc.globalAlpha = 1 - p;
-      mc.drawImage(this.logoImg, 0, 0, cv.width, cv.height);
+      mc.drawImage(this.logoImg, 0, LOGO_Y_OFFSET, cv.width, cv.height);
     }
     if (p > 0.005) {
       mc.globalAlpha = p;
-      mc.font = '700 ' + Math.round(cv.height * 0.416) + 'px "Serial B", serif';
+      mc.font = '700 ' + Math.round(cv.height * ENTER_SIZE) + 'px "Serial B", serif';
       mc.textAlign = 'center';
       mc.textBaseline = 'middle';
       mc.fillStyle = '#fff';
-      var m = mc.measureText('ENTRAR');
+      var m = mc.measureText(ENTER_LABEL);
       var asc = m.actualBoundingBoxAscent || 0, desc = m.actualBoundingBoxDescent || 0;
-      mc.fillText('ENTRAR', cv.width / 2, 450 + (asc - desc) / 2);
+      mc.fillText(ENTER_LABEL, cv.width / 2, 450 + (asc - desc) / 2);
     }
     mc.globalAlpha = 1;
 

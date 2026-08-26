@@ -154,7 +154,7 @@ button { font: inherit; color: inherit; }
   align-items: center;
   gap: clamp(18px, 2.6vw, 40px);
   font-family: var(--font-label);
-  font-size: 10px;
+  font-size: 13px;
   font-weight: 600;
   letter-spacing: .26em;
   text-transform: uppercase;
@@ -172,7 +172,7 @@ button { font: inherit; color: inherit; }
   align-items: center;
   gap: 8px;
   font-family: var(--font-label);
-  font-size: 10px;
+  font-size: 13px;
   font-weight: 600;
   letter-spacing: .22em;
   text-transform: uppercase;
@@ -256,26 +256,6 @@ button { font: inherit; color: inherit; }
 .menu__social { display: flex; gap: 26px; }
 .menu__social a { color: rgba(255, 255, 255, .7); text-decoration: none; }
 .menu__social a:hover { color: var(--white); }
-
-/* botão hambúrguer */
-.menu-toggle {
-  display: flex; align-items: center; gap: 10px;
-  background: none; border: none; padding: 0; cursor: pointer;
-  font-family: var(--font-label);
-  font-size: 10px; font-weight: 600; letter-spacing: .26em; text-transform: uppercase;
-  color: var(--white);
-}
-.menu-toggle__bars { position: relative; width: 22px; height: 12px; flex: none; }
-.menu-toggle__bar {
-  position: absolute; left: 0; width: 22px; height: 1.5px;
-  background: currentColor;
-  transition: top .3s var(--ease-reveal), transform .3s var(--ease-reveal);
-}
-.menu-toggle__bar:nth-child(1) { top: 0; }
-.menu-toggle__bar:nth-child(2) { top: 10px; }
-.menu-toggle.is-open .menu-toggle__bar:nth-child(1) { top: 5px; transform: rotate(45deg); }
-.menu-toggle.is-open .menu-toggle__bar:nth-child(2) { top: 5px; transform: rotate(-45deg); }
-.theme-paper .menu-toggle { color: var(--ink-solid); }
 
 /* ---------- footer ---------- */
 .site-footer {
@@ -852,8 +832,11 @@ button { font: inherit; color: inherit; }
    sozinho não resolve em telas estreitas.
    ========================================================================= */
 @media (max-width: 720px) {
-  .nav { display: none; }               /* no mobile a navegação vive no menu */
-  .site-header__right { gap: 16px; }
+  /* sem hambúrguer, a nav é a única navegação — ela quebra em vez de sumir */
+  .site-header { flex-wrap: wrap; gap: 12px; }
+  .site-header__right { gap: 16px; flex-wrap: wrap; }
+  .nav { gap: 18px; font-size: 12px; letter-spacing: .16em; }
+  .lang { font-size: 12px; }
 
   .page-head { flex-direction: column; align-items: flex-start; gap: 12px; }
   .page-head__meta { white-space: normal; }
