@@ -31,6 +31,10 @@
      única das três que vai embutida no repo. */
   --font-label: 'Geist', -apple-system, BlinkMacSystemFont, sans-serif;
 
+  /* Display grande: nomes de filme na listagem e as sedes na Info. Um valor só
+     para os dois não saírem de sincronia. Teto em 60px. */
+  --fs-display-grande: clamp(36px, 6vw, 60px);
+
   /* ritmo */
   --pad-x: clamp(20px, 4vw, 56px);
   --pad-x-wide: clamp(24px, 5vw, 72px);
@@ -507,7 +511,7 @@ button { font: inherit; color: inherit; }
   font-family: var(--font-display);
   font-weight: 700;
   line-height: .92;
-  font-size: clamp(38px, 6vw, 110px);
+  font-size: var(--fs-display-grande);
   letter-spacing: -.01em;
   text-wrap: balance;
 }
@@ -689,7 +693,7 @@ button { font: inherit; color: inherit; }
   text-align: left; cursor: pointer; width: fit-content;
   font-family: var(--font-display-blur);
   font-weight: 700;
-  font-size: clamp(39px, 7.5vw, 112px);
+  font-size: var(--fs-display-grande);
   line-height: 1.02;
   letter-spacing: -.01em;
   color: var(--white);
