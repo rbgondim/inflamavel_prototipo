@@ -21,6 +21,13 @@
   --heat-4: #EC4B99;
   --heat-5: #DE1B54;
 
+  /* Rosa da interface (header: nav, PT/EN, logo). Vive separado da rampa do
+     gradiente porque tem outro trabalho — ali é cor de marca em movimento,
+     aqui é cor de texto que precisa segurar contraste sobre o preto.
+     --rosa-rgb existe para os usos com opacidade. */
+  --rosa: #FF0D8C;
+  --rosa-rgb: 255, 13, 140;
+
   /* tipografia */
   --font-display: 'Serial B', Georgia, 'Times New Roman', serif;
   --font-display-blur: 'Serial B Blur', 'Serial B', Georgia, serif;
@@ -33,7 +40,7 @@
 
   /* Display grande: nomes de filme na listagem e as sedes na Info. Um valor só
      para os dois não saírem de sincronia. Teto em 60px. */
-  --fs-display-grande: clamp(36px, 6vw, 60px);
+  --fs-display-grande: clamp(44px, 7vw, 88px);
 
   /* ritmo */
   --pad-x: clamp(20px, 4vw, 56px);
@@ -168,7 +175,7 @@ button { font: inherit; color: inherit; }
 }
 .nav__link {
   text-decoration: none;
-  color: var(--heat-4);
+  color: var(--rosa);
   opacity: .95;
   transition: opacity .3s;
 }
@@ -187,12 +194,12 @@ button { font: inherit; color: inherit; }
 .lang__btn {
   background: none; border: none; padding: 0; margin: 0;
   cursor: pointer;
-  color: rgba(236, 75, 153, .45);
+  color: rgba(var(--rosa-rgb), .45);
   letter-spacing: inherit;
   transition: color .3s;
 }
-.lang__btn.is-on { color: var(--heat-4); }
-.lang__sep { color: rgba(236, 75, 153, .4); }
+.lang__btn.is-on { color: var(--rosa); }
+.lang__sep { color: rgba(var(--rosa-rgb), .4); }
 
 /* ---------- menu (overlay) ---------- */
 .menu {
@@ -426,41 +433,6 @@ button { font: inherit; color: inherit; }
 .scroll-cue:hover { transform: translateX(-50%) translateY(6px); }
 .scroll-cue svg { width: clamp(26px, 2.6vw, 40px); height: auto; display: block; }
 
-.dots {
-  position: absolute;
-  bottom: clamp(30px, 4.4vh, 52px);
-  right: var(--pad-x-wide);
-  display: flex;
-  gap: 10px;
-  align-items: center;
-  z-index: 6;
-}
-.dot {
-  width: 10px; height: 10px;
-  border-radius: 999px;
-  border: 1px solid rgba(255, 255, 255, .45);
-  padding: 0;
-  background: transparent;
-  cursor: pointer;
-  transition: width .5s var(--ease-pop), border-color .3s;
-}
-.dot.is-on { width: 30px; border-color: rgba(255, 255, 255, .95); }
-.dot:hover {
-  border-color: transparent;
-  background-image: linear-gradient(90deg, var(--heat-1), var(--heat-2), var(--heat-3), var(--heat-4), var(--heat-5), var(--heat-1), var(--heat-2), var(--heat-3));
-  background-size: 300% 100%;
-  animation: inf-organic 5.5s ease-in-out infinite;
-}
-
-@keyframes inf-organic {
-  0%   { background-position: 0% 50%; }
-  19%  { background-position: 68% 50%; }
-  37%  { background-position: 24% 50%; }
-  58%  { background-position: 100% 50%; }
-  79%  { background-position: 41% 50%; }
-  100% { background-position: 0% 50%; }
-}
-
 /* =========================================================================
    PROJETOS (listagem)
    ========================================================================= */
@@ -578,21 +550,12 @@ button { font: inherit; color: inherit; }
 .hero__arrow svg { width: clamp(26px, 2.6vw, 40px); height: auto; }
 .hero__arrow--prev { left: clamp(14px, 2.5vw, 44px); }
 .hero__arrow--next { right: clamp(14px, 2.5vw, 44px); }
-.hero__arrow--prev:hover { color: var(--heat-4); transform: translateY(-50%) translateX(-5px); }
-.hero__arrow--next:hover { color: var(--heat-4); transform: translateY(-50%) translateX(5px); }
+.hero__arrow--prev:hover { color: var(--rosa); transform: translateY(-50%) translateX(-5px); }
+.hero__arrow--next:hover { color: var(--rosa); transform: translateY(-50%) translateX(5px); }
 
-.hero__dots {
-  position: absolute;
-  bottom: 26px; left: 50%;
-  transform: translateX(-50%);
-  display: flex; gap: 10px; align-items: center;
-  z-index: 4;
-}
-.hero__dots .dot { border-color: rgba(255, 255, 255, .6); }
-
-/* filmes com um still só não têm setas nem bolinhas. Precisa ser explícito:
-   a regra do navegador para [hidden] perde para o display das classes acima. */
-.hero__arrow[hidden], .hero__dots[hidden] { display: none; }
+/* filmes com um still só não têm setas. Precisa ser explícito: a regra do
+   navegador para [hidden] perde para o display da classe acima. */
+.hero__arrow[hidden] { display: none; }
 
 .project-head {
   padding: clamp(40px, 6vh, 80px) var(--pad-x) clamp(20px, 3vh, 36px);
@@ -617,7 +580,9 @@ button { font: inherit; color: inherit; }
   font-family: var(--font-display);
   font-weight: 700;
   line-height: .9;
-  font-size: clamp(40px, 6.6vw, 120px);
+  /* Menor que o logo do header de propósito: aqui quem manda é a marca,
+     não o nome do filme. O logo vai a 5,7vw; este fica em 4vw. */
+  font-size: clamp(30px, 4vw, 58px);
   letter-spacing: -.01em;
   text-wrap: balance;
 }
@@ -840,7 +805,6 @@ button { font: inherit; color: inherit; }
   .site-footer__top { gap: 36px; }
   .site-footer__legal { margin-top: 48px; }
 
-  .dots { right: var(--pad-x); }
 }
 
 @media (prefers-reduced-motion: reduce) {

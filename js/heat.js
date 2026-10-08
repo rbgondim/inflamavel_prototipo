@@ -10,7 +10,7 @@
    2. HeatChrome — o loop que mantém --heat viva (um canvas 200x60 convertido em
       data URL a ~18 fps), consumida pelos hovers do menu, da escolha de sede e
       da faixa de retorno. Também pinta o logo do header, que hoje é rosa
-      chapado (--heat-4) recortado pelo PNG, e não mais o gradiente animado.
+      chapado (--rosa) recortado pelo PNG, e não mais o gradiente animado.
 
    Este arquivo não depende de nenhuma página específica.
    ============================================================================= */
@@ -110,9 +110,9 @@ window.INF = window.INF || {};
     this._logoDrawn = false;
 
     /* O logo do header é rosa chapado, não o gradiente animado. A cor vem do
-       token --heat-4 para o CSS seguir sendo a fonte única. */
+       token --rosa para o CSS seguir sendo a fonte única. */
     this.logoColor = getComputedStyle(document.documentElement)
-      .getPropertyValue('--heat-4').trim() || '#EC4B99';
+      .getPropertyValue('--rosa').trim() || '#FF0D8C';
 
     var self = this;
     this._onMove = function (e) {

@@ -41,7 +41,6 @@ window.INF = window.INF || {};
     this.logoCanvas = document.querySelector('.splash__logo');
 
     this.track = document.querySelector('.carousel__track');
-    this.dots = document.querySelector('.dots');
     this.slideCount = this.track ? this.track.children.length : 0;
 
     this.slide = 0;
@@ -229,15 +228,6 @@ window.INF = window.INF || {};
   Home.prototype.bindCarousel = function () {
     var self = this;
 
-    if (this.dots) {
-      var dots = this.dots.querySelectorAll('.dot');
-      for (var i = 0; i < dots.length; i++) {
-        dots[i].addEventListener('click', function (e) {
-          self.go(+e.currentTarget.getAttribute('data-i'));
-        });
-      }
-    }
-
     var cue = document.querySelector('.scroll-cue');
     if (cue) {
       cue.addEventListener('click', function () {
@@ -263,9 +253,6 @@ window.INF = window.INF || {};
 
   Home.prototype.applyTrack = function () {
     if (this.track) this.track.style.transform = 'translateX(-' + (this.slide * 100) + 'vw)';
-    if (!this.dots) return;
-    var dots = this.dots.querySelectorAll('.dot');
-    for (var i = 0; i < dots.length; i++) dots[i].classList.toggle('is-on', i === this.slide);
   };
 
   /* --------------------------------------------------------------- loop */

@@ -52,7 +52,6 @@ window.INF = window.INF || {};
 
     var stills = (film.stills && film.stills.length) ? film.stills : [film.img];
     var track = document.querySelector('.hero__track');
-    var dots = document.querySelector('.hero__dots');
     if (!track) return stills;
 
     track.innerHTML = '';
@@ -66,21 +65,11 @@ window.INF = window.INF || {};
       track.appendChild(slide);
     }
 
-    /* setas e bolinhas só fazem sentido com mais de uma imagem */
+    /* as setas só fazem sentido com mais de uma imagem */
     var multi = stills.length > 1;
-    var controls = document.querySelectorAll('.hero__arrow, .hero__dots');
-    for (var c = 0; c < controls.length; c++) controls[c].hidden = !multi;
+    var setas = document.querySelectorAll('.hero__arrow');
+    for (var c = 0; c < setas.length; c++) setas[c].hidden = !multi;
 
-    if (dots) {
-      dots.innerHTML = '';
-      for (var k = 0; k < stills.length; k++) {
-        var b = document.createElement('button');
-        b.className = 'dot' + (k === 0 ? ' is-on' : '');
-        b.setAttribute('data-i', k);
-        b.setAttribute('aria-label', 'Ir para imagem ' + (k + 1));
-        dots.appendChild(b);
-      }
-    }
     return stills;
   }
 
@@ -90,14 +79,10 @@ window.INF = window.INF || {};
     this.count = count || 1;
     this.i = 0;
     this.track = document.querySelector('.hero__track');
-    this.dots = document.querySelector('.hero__dots');
   }
 
   Hero.prototype.apply = function () {
     if (this.track) this.track.style.transform = 'translateX(-' + (this.i * 100) + '%)';
-    if (!this.dots) return;
-    var dots = this.dots.querySelectorAll('.dot');
-    for (var k = 0; k < dots.length; k++) dots[k].classList.toggle('is-on', k === this.i);
   };
 
   Hero.prototype.go = function (n) {
@@ -112,12 +97,6 @@ window.INF = window.INF || {};
     var next = document.querySelector('.hero__arrow--next');
     if (prev) prev.addEventListener('click', function () { self.go(self.i - 1); });
     if (next) next.addEventListener('click', function () { self.go(self.i + 1); });
-    if (this.dots) {
-      this.dots.addEventListener('click', function (e) {
-        var b = e.target.closest('.dot');
-        if (b) self.go(+b.getAttribute('data-i'));
-      });
-    }
   };
 
   /* --------------------------------------------------- faixa de retorno */
