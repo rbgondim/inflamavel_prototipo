@@ -564,9 +564,16 @@ button { font: inherit; color: inherit; }
   font-family: var(--font-display);
   font-weight: 700;
   line-height: .9;
-  /* Menor que o logo do header de propósito: aqui quem manda é a marca,
-     não o nome do filme. O logo vai a 5,7vw; este fica em 4vw. */
-  font-size: clamp(30px, 4vw, 58px);
+  /* Menor que o logo do header de propósito: entrando no projeto quem manda é
+     a marca, não o nome do filme.
+
+     O número sai de uma conta, não do olho. Comparar font-size com a altura do
+     canvas do logo engana: o PNG é 55% espaço vazio, com as letras em y 328–757
+     de 945. Logo o logo rende 0,454 da altura que o css pede, e a caixa alta da
+     Serial B rende 0,70 do font-size. Para a caixa alta ficar em 80% da letra
+     do logo: 0,8 x 0,454 / 0,70 = 0,52 da altura do logo, que é clamp(50px,
+     5.7vw, 84px). */
+  font-size: clamp(26px, 3vw, 44px);
   letter-spacing: -.01em;
   text-wrap: balance;
 }
