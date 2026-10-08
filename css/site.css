@@ -38,9 +38,19 @@
      única das três que vai embutida no repo. */
   --font-label: 'Geist', -apple-system, BlinkMacSystemFont, sans-serif;
 
-  /* Display grande: nomes de filme na listagem e as sedes na Info. Um valor só
-     para os dois não saírem de sincronia. Teto em 60px. */
-  --fs-display-grande: clamp(44px, 7vw, 88px);
+  /* Título de tema — as sedes na Info, e qualquer seção que venha depois.
+     Estes podem passar do logo: são a voz da página. */
+  --fs-tema: clamp(44px, 7vw, 88px);
+
+  /* Nome de filme ou série, na listagem e na página do projeto. Estes NUNCA
+     passam do logo: ao lado da marca, quem manda é a marca.
+
+     O valor sai de conta, não do olho. O PNG do logo é 55% espaço vazio (letras
+     em y 328–757 de 945), então rende 0,454 da altura que o css pede; a caixa
+     alta da Serial B rende 0,70 do font-size. Para a caixa alta ficar em 80% da
+     letra do logo: 0,8 x 0,454 / 0,70 = 0,52 da altura do logo, hoje
+     clamp(50px, 5.7vw, 84px). */
+  --fs-titulo-filme: clamp(26px, 3vw, 44px);
 
   /* ritmo */
   --pad-x: clamp(20px, 4vw, 56px);
@@ -467,7 +477,7 @@ button { font: inherit; color: inherit; }
   font-family: var(--font-display);
   font-weight: 700;
   line-height: .92;
-  font-size: var(--fs-display-grande);
+  font-size: var(--fs-titulo-filme);
   letter-spacing: -.01em;
   text-wrap: balance;
 }
@@ -564,16 +574,7 @@ button { font: inherit; color: inherit; }
   font-family: var(--font-display);
   font-weight: 700;
   line-height: .9;
-  /* Menor que o logo do header de propósito: entrando no projeto quem manda é
-     a marca, não o nome do filme.
-
-     O número sai de uma conta, não do olho. Comparar font-size com a altura do
-     canvas do logo engana: o PNG é 55% espaço vazio, com as letras em y 328–757
-     de 945. Logo o logo rende 0,454 da altura que o css pede, e a caixa alta da
-     Serial B rende 0,70 do font-size. Para a caixa alta ficar em 80% da letra
-     do logo: 0,8 x 0,454 / 0,70 = 0,52 da altura do logo, que é clamp(50px,
-     5.7vw, 84px). */
-  font-size: clamp(26px, 3vw, 44px);
+  font-size: var(--fs-titulo-filme);
   letter-spacing: -.01em;
   text-wrap: balance;
 }
@@ -649,7 +650,7 @@ button { font: inherit; color: inherit; }
   text-align: left; cursor: pointer; width: fit-content;
   font-family: var(--font-display-blur);
   font-weight: 700;
-  font-size: var(--fs-display-grande);
+  font-size: var(--fs-tema);
   line-height: 1.02;
   letter-spacing: -.01em;
   color: var(--rosa);
