@@ -417,22 +417,6 @@ button { font: inherit; color: inherit; }
   pointer-events: none;
 }
 
-.scroll-cue {
-  position: absolute;
-  bottom: clamp(26px, 4vh, 48px);
-  left: 50%;
-  transform: translateX(-50%);
-  z-index: 6;
-  background: none; border: none;
-  color: rgba(255, 255, 255, .92);
-  cursor: pointer;
-  padding: 10px 16px;
-  transition: transform .4s cubic-bezier(.7, 0, .2, 1), color .3s;
-  filter: drop-shadow(0 2px 12px rgba(0, 0, 0, .55));
-}
-.scroll-cue:hover { transform: translateX(-50%) translateY(6px); }
-.scroll-cue svg { width: clamp(26px, 2.6vw, 40px); height: auto; display: block; }
-
 /* =========================================================================
    PROJETOS (listagem)
    ========================================================================= */

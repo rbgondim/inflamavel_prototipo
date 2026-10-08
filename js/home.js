@@ -19,6 +19,10 @@ window.INF = window.INF || {};
      comportamento antigo (splash em todo carregamento), troque para false. */
   var SPLASH_ONCE_PER_SESSION = true;
 
+  /* Quanto cada imagem fica na tela antes de passar sozinha. A transição em si
+     leva .8s (css: .carousel__track). 0 desliga a passagem automática. */
+  var AUTOPLAY_MS = 5500;
+
   /* Palavra que substitui o logo no hover do splash. ENTER_SIZE é a fração
      da altura do canvas usada como corpo da fonte. */
   var ENTER_LABEL = 'Entrar';
@@ -50,6 +54,7 @@ window.INF = window.INF || {};
     this.cur = { x: window.innerWidth / 2, y: window.innerHeight / 2 };
     this.target = { x: this.cur.x, y: this.cur.y };
     this.hoverLogo = false;
+    this.timer = null;
     this._hp = 0;
     this._lastBg = 0;
     this.logoReady = false;
@@ -90,6 +95,14 @@ window.INF = window.INF || {};
     window.addEventListener('resize', function () { self.setBgSize(); });
 
     this.applyTrack();
+    if (this.entered) this.startAuto();
+
+    /* em aba escondida o setInterval se acumula e o carrossel volta correndo */
+    document.addEventListener('visibilitychange', function () {
+      if (document.hidden) self.stopAuto();
+      else if (self.entered) self.startAuto();
+    });
+
     this.loop = this.loop.bind(this);
     requestAnimationFrame(this.loop);
   };
@@ -124,6 +137,7 @@ window.INF = window.INF || {};
     setTimeout(function () {
       self.entered = true;
       self.splash.hidden = true;
+      self.startAuto();
     }, 950);
   };
 
@@ -228,13 +242,6 @@ window.INF = window.INF || {};
   Home.prototype.bindCarousel = function () {
     var self = this;
 
-    var cue = document.querySelector('.scroll-cue');
-    if (cue) {
-      cue.addEventListener('click', function () {
-        window.scrollTo({ top: window.innerHeight, behavior: 'smooth' });
-      });
-    }
-
     window.addEventListener('keydown', function (e) {
       if (!self.entered) {
         if (e.key === 'Enter' || e.key === ' ') self.enter();
@@ -249,6 +256,26 @@ window.INF = window.INF || {};
     var c = this.slideCount || 1;
     this.slide = ((i % c) + c) % c;
     this.applyTrack();
+    /* quem passou à mão merece o tempo cheio na imagem que escolheu */
+    if (this.timer) this.startAuto();
+  };
+
+  /* ------------------------------------------------- passagem automática */
+
+  Home.prototype.startAuto = function () {
+    this.stopAuto();
+    if (!AUTOPLAY_MS || this.slideCount < 2) return;
+    /* quem pediu menos movimento no sistema não recebe carrossel andando só */
+    if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    var self = this;
+    this.timer = setInterval(function () {
+      self.slide = (self.slide + 1) % self.slideCount;
+      self.applyTrack();
+    }, AUTOPLAY_MS);
+  };
+
+  Home.prototype.stopAuto = function () {
+    if (this.timer) { clearInterval(this.timer); this.timer = null; }
   };
 
   Home.prototype.applyTrack = function () {
