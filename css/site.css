@@ -88,10 +88,10 @@ html, body {
   -webkit-font-smoothing: antialiased;
 }
 
-body { color: var(--white); }
+body { color: var(--rosa); }
 
 /* páginas claras (projeto.html) */
-body.theme-paper { background: var(--paper); color: var(--ink-solid); }
+body.theme-paper { background: var(--paper); color: var(--rosa); }
 
 img { max-width: 100%; display: block; }
 a { color: inherit; }
@@ -105,12 +105,12 @@ button { font: inherit; color: inherit; }
   font-weight: 500;
   letter-spacing: .28em;
   text-transform: uppercase;
-  color: rgba(255, 255, 255, .45);
+  color: rgba(var(--rosa-rgb), .45);
 }
 .label--sm { font-size: 11px; letter-spacing: .3em; }
-.label--strong { font-weight: 600; color: rgba(255, 255, 255, .82); }
-.theme-paper .label { color: rgba(20, 20, 26, .45); }
-.theme-paper .label--strong { color: rgba(20, 20, 26, .82); }
+.label--strong { font-weight: 600; color: rgba(var(--rosa-rgb), .82); }
+.theme-paper .label { color: rgba(var(--rosa-rgb), .45); }
+.theme-paper .label--strong { color: rgba(var(--rosa-rgb), .82); }
 
 /* texto pintado pelo gradiente heat */
 .heat-text {
@@ -207,7 +207,7 @@ button { font: inherit; color: inherit; }
   inset: 0;
   z-index: 60;
   background: var(--ink);
-  color: var(--white);
+  color: var(--rosa);
   display: flex;
   flex-direction: column;
   padding: 15px var(--pad-x) clamp(22px, 4vw, 56px);
@@ -224,12 +224,12 @@ button { font: inherit; color: inherit; }
 .pill-btn {
   background: none; border: 1px solid rgba(255, 255, 255, .28);
   border-radius: 999px; padding: 7px 14px; cursor: pointer;
-  color: rgba(255, 255, 255, .75);
+  color: rgba(var(--rosa-rgb), .75);
   font-family: var(--font-label);
   font-size: 11px; letter-spacing: .2em; text-transform: uppercase;
   transition: color .3s, border-color .3s;
 }
-.pill-btn:hover { color: var(--white); border-color: rgba(255, 255, 255, .75); }
+.pill-btn:hover { color: var(--rosa); border-color: rgba(255, 255, 255, .75); }
 
 .menu__nav {
   margin: auto 0;
@@ -243,7 +243,7 @@ button { font: inherit; color: inherit; }
   font-size: clamp(44px, 8.4vw, 124px);
   line-height: 1.04;
   letter-spacing: -.01em;
-  color: var(--white);
+  color: var(--rosa);
   text-decoration: none;
   width: fit-content;
 }
@@ -265,22 +265,22 @@ button { font: inherit; color: inherit; }
   font-size: 11px;
   letter-spacing: .24em;
   text-transform: uppercase;
-  color: rgba(255, 255, 255, .55);
+  color: rgba(var(--rosa-rgb), .55);
 }
 .menu__social { display: flex; gap: 26px; }
-.menu__social a { color: rgba(255, 255, 255, .7); text-decoration: none; }
-.menu__social a:hover { color: var(--white); }
+.menu__social a { color: rgba(var(--rosa-rgb), .7); text-decoration: none; }
+.menu__social a:hover { color: var(--rosa); }
 
 /* ---------- footer ---------- */
 .site-footer {
   background: var(--ink);
-  color: var(--white);
+  color: var(--rosa);
   padding: clamp(64px, 11vh, 128px) var(--pad-x) 44px;
   border-top: 1px solid rgba(255, 255, 255, .12);
 }
 .site-footer--paper {
   background: var(--paper);
-  color: var(--ink-solid);
+  color: var(--rosa);
   border-top: none;
   padding: clamp(60px, 10vh, 120px) var(--pad-x) 44px;
 }
@@ -300,7 +300,7 @@ button { font: inherit; color: inherit; }
   font-weight: 600;
   letter-spacing: .26em;
   text-transform: uppercase;
-  color: rgba(255, 255, 255, .82);
+  color: rgba(var(--rosa-rgb), .82);
 }
 .site-footer__logo { height: clamp(60px, 7.5vw, 92px); width: auto; }
 
@@ -313,22 +313,22 @@ button { font: inherit; color: inherit; }
   font-size: 13px;
   letter-spacing: .14em;
   text-transform: uppercase;
-  color: rgba(255, 255, 255, .82);
+  color: rgba(var(--rosa-rgb), .82);
   text-decoration: none;
   transition: color .3s;
 }
-.site-footer__link:hover { color: var(--white); }
-.site-footer--paper .site-footer__link { font-size: 12px; color: rgba(20, 20, 26, .82); }
-.site-footer--paper .site-footer__link:hover { color: var(--ink-solid); }
+.site-footer__link:hover { color: var(--rosa); }
+.site-footer--paper .site-footer__link { font-size: 12px; color: rgba(var(--rosa-rgb), .82); }
+.site-footer--paper .site-footer__link:hover { color: var(--rosa); }
 
 .site-footer__legal {
   margin-top: 72px;
   font-size: 11px;
   letter-spacing: .3em;
-  color: rgba(255, 255, 255, .5);
+  color: rgba(var(--rosa-rgb), .5);
 }
 .site-footer--paper .site-footer__legal {
-  margin-top: 64px; font-size: 12px; letter-spacing: .28em; color: rgba(20, 20, 26, .5);
+  margin-top: 64px; font-size: 12px; letter-spacing: .28em; color: rgba(var(--rosa-rgb), .5);
 }
 
 /* =========================================================================
@@ -427,7 +427,7 @@ button { font: inherit; color: inherit; }
   height: clamp(540px, 92vh, 1080px);
   overflow: hidden;
   text-decoration: none;
-  color: var(--white);
+  color: var(--rosa);
 }
 .film__img {
   position: absolute; inset: 0;
@@ -450,7 +450,7 @@ button { font: inherit; color: inherit; }
   font-family: var(--font-display);
   font-weight: 500;
   font-size: clamp(16px, 1.6vw, 24px);
-  color: rgba(255, 255, 255, .7);
+  color: rgba(var(--rosa-rgb), .7);
 }
 .film__body {
   position: absolute;
@@ -459,7 +459,7 @@ button { font: inherit; color: inherit; }
 }
 .film__meta {
   font-size: 11px; font-weight: 600; letter-spacing: .3em;
-  text-transform: uppercase; color: rgba(255, 255, 255, .72);
+  text-transform: uppercase; color: rgba(var(--rosa-rgb), .72);
   margin-bottom: 14px;
   display: flex; gap: 14px; align-items: center; flex-wrap: wrap;
 }
@@ -489,20 +489,20 @@ button { font: inherit; color: inherit; }
   margin-top: 18px;
   font-size: clamp(14px, 1.15vw, 17px);
   line-height: 1.5;
-  color: rgba(255, 255, 255, .86);
+  color: rgba(var(--rosa-rgb), .86);
 }
 .film.is-active .film__synopsis { opacity: 1; transform: translateY(0); }
 
 .film__director {
   margin-top: 16px;
   font-size: 11px; letter-spacing: .22em; text-transform: uppercase;
-  color: rgba(255, 255, 255, .55);
+  color: rgba(var(--rosa-rgb), .55);
 }
 
 /* =========================================================================
    PROJETO (detalhe) — página clara
    ========================================================================= */
-.project { position: relative; width: 100%; background: var(--paper); color: var(--ink-solid); }
+.project { position: relative; width: 100%; background: var(--paper); color: var(--rosa); }
 
 .hero {
   position: relative;
@@ -525,7 +525,7 @@ button { font: inherit; color: inherit; }
   transform: translateY(-50%);
   z-index: 4;
   background: none; border: none;
-  color: rgba(255, 255, 255, .9);
+  color: rgba(var(--rosa-rgb), .9);
   cursor: pointer;
   padding: 14px;
   filter: drop-shadow(0 2px 12px rgba(0, 0, 0, .5));
@@ -548,15 +548,15 @@ button { font: inherit; color: inherit; }
 .back-link {
   display: inline-flex; align-items: center; gap: 10px;
   font-size: 12px; font-weight: 500; letter-spacing: .26em; text-transform: uppercase;
-  color: rgba(20, 20, 26, .55);
+  color: rgba(var(--rosa-rgb), .55);
   text-decoration: none;
   margin-bottom: 26px;
 }
-.back-link:hover { color: var(--ink-solid); }
+.back-link:hover { color: var(--rosa); }
 
 .project-head__meta {
   font-size: 12px; font-weight: 500; letter-spacing: .26em; text-transform: uppercase;
-  color: rgba(20, 20, 26, .55);
+  color: rgba(var(--rosa-rgb), .55);
   margin-bottom: 18px;
   display: flex; gap: 14px; align-items: center; flex-wrap: wrap;
 }
@@ -594,7 +594,7 @@ button { font: inherit; color: inherit; }
 .project-body__text {
   font-size: 16px;
   line-height: 1.6;
-  color: rgba(20, 20, 26, .9);
+  color: rgba(var(--rosa-rgb), .9);
   max-width: 56ch;
 }
 .project-body__block {
@@ -607,7 +607,7 @@ button { font: inherit; color: inherit; }
 
 .spec { display: flex; flex-direction: column; gap: 6px; }
 .spec .label { margin-bottom: 0; }
-.spec__value { font-size: 16px; line-height: 1.55; color: var(--ink-solid); }
+.spec__value { font-size: 16px; line-height: 1.55; color: var(--rosa); }
 .spec-row { display: flex; gap: 36px; flex-wrap: wrap; }
 
 /* faixa "todos os projetos" — pinta-se com o heat no hover, via JS */
@@ -618,7 +618,7 @@ button { font: inherit; color: inherit; }
   font-family: var(--font-display);
   font-weight: 700;
   font-size: clamp(28px, 3.6vw, 56px);
-  color: var(--ink-solid);
+  color: var(--rosa);
   text-decoration: none;
   background-position: center;
   transition: color .3s ease;
@@ -645,7 +645,7 @@ button { font: inherit; color: inherit; }
   font-size: var(--fs-display-grande);
   line-height: 1.02;
   letter-spacing: -.01em;
-  color: var(--white);
+  color: var(--rosa);
 }
 .office-gate__btn:hover {
   background-image: var(--heat);
@@ -675,7 +675,7 @@ button { font: inherit; color: inherit; }
 .info-head__right {
   display: flex; align-items: baseline; gap: 22px;
   font-size: 12px; font-weight: 500; letter-spacing: .28em; text-transform: uppercase;
-  color: rgba(255, 255, 255, .55);
+  color: rgba(var(--rosa-rgb), .55);
   white-space: nowrap;
 }
 
@@ -695,9 +695,9 @@ button { font: inherit; color: inherit; }
   font-size: clamp(20px, 2vw, 28px);
   line-height: 1.5;
   font-weight: 300;
-  color: rgba(255, 255, 255, .95);
+  color: rgba(var(--rosa-rgb), .95);
 }
-.lede--dim { color: rgba(255, 255, 255, .72); }
+.lede--dim { color: rgba(var(--rosa-rgb), .72); }
 
 .row {
   display: flex;
@@ -706,33 +706,33 @@ button { font: inherit; color: inherit; }
   padding: 16px 0;
   border-top: 1px solid rgba(255, 255, 255, .1);
 }
-.row__year { flex: 0 0 52px; font-size: 12px; font-weight: 600; letter-spacing: .1em; color: rgba(255, 255, 255, .5); }
+.row__year { flex: 0 0 52px; font-size: 12px; font-weight: 600; letter-spacing: .1em; color: rgba(var(--rosa-rgb), .5); }
 .row__main { flex: 1 1 auto; }
 .row__title { font-size: 16px; font-weight: 500; }
 .row__role {
   margin-top: 5px;
   font-size: 12px; letter-spacing: .14em; text-transform: uppercase;
-  color: rgba(255, 255, 255, .5);
+  color: rgba(var(--rosa-rgb), .5);
 }
 .row__type {
   flex: 0 0 auto;
   font-size: 12px; letter-spacing: .2em; text-transform: uppercase;
-  color: rgba(255, 255, 255, .55);
+  color: rgba(var(--rosa-rgb), .55);
   text-align: right;
 }
 
 .row--marco { max-width: 70ch; }
-.row--marco .row__year { font-size: 16px; color: var(--white); }
-.row--marco .row__text { flex: 1 1 auto; font-size: 16px; line-height: 1.55; color: rgba(255, 255, 255, .85); }
+.row--marco .row__year { font-size: 16px; color: var(--rosa); }
+.row--marco .row__text { flex: 1 1 auto; font-size: 16px; line-height: 1.55; color: rgba(var(--rosa-rgb), .85); }
 
 .founder { max-width: 60ch; }
 .founder__name { font-size: 16px; font-weight: 600; }
 .founder__role {
   margin-top: 6px; margin-bottom: 16px;
   font-size: 12px; letter-spacing: .2em; text-transform: uppercase;
-  color: rgba(255, 255, 255, .55);
+  color: rgba(var(--rosa-rgb), .55);
 }
-.founder__bio { font-size: 16px; line-height: 1.6; color: rgba(255, 255, 255, .82); }
+.founder__bio { font-size: 16px; line-height: 1.6; color: rgba(var(--rosa-rgb), .82); }
 
 .info-footer { padding: var(--pad-section) var(--pad-x) 44px; }
 .info-footer__grid { display: flex; flex-wrap: wrap; gap: var(--gap-section); }
@@ -745,9 +745,9 @@ button { font: inherit; color: inherit; }
 .impressum-row__label {
   flex: 0 0 200px;
   font-size: 12px; letter-spacing: .14em; text-transform: uppercase;
-  color: rgba(255, 255, 255, .5);
+  color: rgba(var(--rosa-rgb), .5);
 }
-.impressum-row__value { flex: 1 1 300px; font-size: 16px; color: rgba(255, 255, 255, .9); }
+.impressum-row__value { flex: 1 1 300px; font-size: 16px; color: rgba(var(--rosa-rgb), .9); }
 
 .info-footer__bottom {
   margin-top: clamp(48px, 7vh, 90px);
@@ -758,9 +758,9 @@ button { font: inherit; color: inherit; }
   display: flex; gap: 26px;
   font-size: 12px; letter-spacing: .2em; text-transform: uppercase;
 }
-.info-footer__links a { color: rgba(255, 255, 255, .7); text-decoration: none; }
-.info-footer__links a:hover { color: var(--white); }
-.info-footer__legal { margin-top: 40px; font-size: 12px; letter-spacing: .28em; color: rgba(255, 255, 255, .5); }
+.info-footer__links a { color: rgba(var(--rosa-rgb), .7); text-decoration: none; }
+.info-footer__links a:hover { color: var(--rosa); }
+.info-footer__legal { margin-top: 40px; font-size: 12px; letter-spacing: .28em; color: rgba(var(--rosa-rgb), .5); }
 
 /* =========================================================================
    RESPONSIVO
