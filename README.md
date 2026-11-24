@@ -74,6 +74,35 @@ Use este servidor e não o `python3 -m http.server`: o embutido não manda
 `Cache-Control`, o navegador cacheia CSS e JS por conta própria, e você fica
 editando arquivo e vendo a versão antiga sem nenhum aviso.
 
+## Variantes de cor em teste
+
+Experimentos pendurados na URL, para comparar o mesmo site sem fixar escolha:
+
+```
+?texto=amarelo     ?fundo=grafite
+?texto=vermelho    ?fundo=noite
+                   ?fundo=creme
+```
+
+Combinam: `?texto=amarelo&fundo=noite`. Funciona porque todo texto do site
+aponta para `--rosa` e todo fundo escuro para `--ink` — trocar dois tokens
+troca tudo. Para fixar uma escolha, o valor sobe para o `:root` e o bloco de
+variantes sai do CSS.
+
+Contraste medido (texto corrido a 90%, mínimo de 4,5):
+
+| texto | preto | grafite | noite | creme |
+|---|---|---|---|---|
+| rosa | 4,51 | 4,12 | 4,30 | 3,20 |
+| amarelo | **11,46** | 10,50 | 10,94 | 1,25 |
+| vermelho | 4,52 | 4,13 | 4,30 | 3,12 |
+
+Os rótulos a 45% de opacidade ficam abaixo do mínimo em todas as combinações
+menos as de amarelo sobre fundo escuro, que chegam a 3,5. Se a escolha final
+não for amarelo, a escala de opacidade precisa ser repensada: hoje os níveis
+baixos escurecem em direção ao fundo, e o caminho é clareá-los em direção ao
+branco.
+
 ## Cache
 
 Local: use `dev-server.py`, que manda `no-store`.

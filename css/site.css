@@ -70,6 +70,26 @@
   --ease-pop: cubic-bezier(.34, 1.4, .5, 1);
 }
 
+/* ---------- variantes para teste ----------
+   Experimentos de cor pendurados em ?texto= e ?fundo= na URL, lidos por um
+   script no <head> de cada página. Não mudam o padrão: servem para comparar o
+   mesmo site lado a lado antes de escolher.
+
+     ?texto=amarelo        ?fundo=grafite
+     ?texto=vermelho       ?fundo=noite
+                           ?fundo=creme
+
+   Combinam: ?texto=amarelo&fundo=noite. Como todo texto do site aponta para
+   --rosa e todo fundo escuro para --ink, trocar esses dois tokens troca tudo.
+   Para fixar uma escolha, o valor sobe para o :root lá em cima e este bloco sai. */
+
+:root[data-texto="amarelo"]  { --rosa: #FFD60A; --rosa-rgb: 255, 214, 10; }
+:root[data-texto="vermelho"] { --rosa: #FF2E2E; --rosa-rgb: 255, 46, 46; }
+
+:root[data-fundo="grafite"] { --ink: #16161a; }
+:root[data-fundo="noite"]   { --ink: #0a1020; }
+:root[data-fundo="creme"]   { --ink: #f4f3ef; }
+
 /* ---------- fontes ---------- */
 /* Geist é variável: os cinco arquivos cobrem todos os pesos, separados por
    subset unicode para não baixar cirílico/vietnamita à toa. */

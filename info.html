@@ -8,6 +8,9 @@
 <link rel="icon" href="assets/img/logo-white.png">
 <link rel="preload" href="assets/fonts/serial-b-blur-700.otf" as="font" type="font/otf" crossorigin>
 <link rel="preload" href="assets/fonts/geist-latin.woff2" as="font" type="font/woff2" crossorigin>
+<script>/* variantes de teste: ?texto= e ?fundo= — ver css/site.css */
+(function(){var p=new URLSearchParams(location.search),d=document.documentElement;
+["texto","fundo"].forEach(function(k){var v=p.get(k);if(v)d.setAttribute("data-"+k,v);});})();</script>
 <link rel="stylesheet" href="css/site.css">
 </head>
 <body>
@@ -23,7 +26,9 @@
     <div class="lang">
       <button class="lang__btn is-on" data-lang="PT" type="button">PT</button>
       <span class="lang__sep">/</span>
-      <button class="lang__btn" data-lang="EN" type="button">EN</button>
+      <button class="lang__btn" data-lang="ENG" type="button">ENG</button>
+      <span class="lang__sep">/</span>
+      <button class="lang__btn" data-lang="GER" type="button">GER</button>
     </div>
   </div>
 </header>

@@ -9,9 +9,11 @@
    abria — era código morto. Aqui o botão hambúrguer está no header e funciona,
    o que também dá navegação no mobile (onde a nav horizontal é escondida).
 
-   Nota sobre PT / EN: continua sendo só um estado visual, como no original.
-   Nenhum conteúdo é traduzido ainda. Quando houver tradução, o gancho é o
-   evento 'inf:lang' disparado abaixo.
+   Nota sobre PT / ENG / GER: por enquanto é só estado visual — o conteúdo não
+   é traduzido, o texto final ainda será escrito. O que já funciona é o gancho:
+   o botão troca o atributo lang do documento (pt-BR / en / de) e dispara o
+   evento 'inf:lang'. Quando os textos existirem, é nesse evento que a troca
+   entra, sem mexer no header.
    ============================================================================= */
 window.INF = window.INF || {};
 
@@ -74,7 +76,8 @@ window.INF = window.INF || {};
             for (var j = 0; j < btns.length; j++) {
               btns[j].classList.toggle('is-on', btns[j].getAttribute('data-lang') === lang);
             }
-            document.documentElement.setAttribute('lang', lang === 'EN' ? 'en' : 'pt-BR');
+            var tags = { PT: 'pt-BR', ENG: 'en', GER: 'de' };
+            document.documentElement.setAttribute('lang', tags[lang] || 'pt-BR');
             document.dispatchEvent(new CustomEvent('inf:lang', { detail: { lang: lang } }));
           });
         }
