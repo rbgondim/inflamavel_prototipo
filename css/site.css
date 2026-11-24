@@ -21,12 +21,25 @@
   --heat-4: #EC4B99;
   --heat-5: #DE1B54;
 
-  /* Rosa da interface (header: nav, PT/EN, logo). Vive separado da rampa do
-     gradiente porque tem outro trabalho — ali é cor de marca em movimento,
-     aqui é cor de texto que precisa segurar contraste sobre o preto.
-     --rosa-rgb existe para os usos com opacidade. */
-  --rosa: #FF0D8C;
-  --rosa-rgb: 255, 13, 140;
+  /* Cor de texto da interface — nav, PT/ENG/GER, logo do header, títulos,
+     tudo. Vive separada da rampa do gradiente porque tem outro trabalho: ali
+     é cor de marca em movimento, aqui é cor que precisa segurar contraste
+     sobre o preto.
+
+     O nome continua --rosa por histórico: hoje o valor passeia pelos três
+     acentos (ver "ciclo de cor" abaixo) e o rosa é só um deles. Renomear
+     custaria trinta linhas de diff para não mudar nada na tela.
+
+     O valor aqui é o estado de repouso: é o que aparece quando o ciclo está
+     desligado (?texto=, prefers-reduced-motion, navegador sem @property).
+     Amarelo por medida — sobre o preto dá 11,46 de contraste contra 4,51 do
+     rosa, e a diferença aparece justamente onde o site mais sofre, texto
+     sobre fotograma.
+
+     Usos com opacidade vão por color-mix, não por rgba(): rgba() precisava de
+     um segundo token com os canais soltos (--rosa-rgb), e um token paralelo
+     não acompanha a cor animada. color-mix come a cor pronta. */
+  --rosa: #FFD60A;
 
   /* tipografia */
   --font-display: 'Serial B', Georgia, 'Times New Roman', serif;
@@ -73,21 +86,61 @@
   --ease-pop: cubic-bezier(.34, 1.4, .5, 1);
 }
 
+/* ---------- ciclo de cor ----------
+   A cor de texto do site não é mais uma escolha: ela anda. Amarelo, rosa,
+   vermelho, de volta ao amarelo — 13s parado em cada um e 3s de travessia, 48s
+   a volta inteira. Quem chega vê amarelo; quem fica vê o site mudar de humor.
+
+   Isso funciona porque o site inteiro aponta para um único token. Animar
+   custom property exige registrar com @property: sem o syntax '<color>' o
+   navegador trata o valor como texto e troca aos saltos, sem interpolar.
+
+   Uma animação vence a declaração do :root, então o valor lá em cima é o
+   repouso, não o padrão — é o que fica quando o ciclo não roda:
+
+     ?texto=amarelo | rosa | vermelho   fixa um dos três
+     prefers-reduced-motion             cai no último quadro (amarelo)
+     navegador sem @property            fica no valor do :root (amarelo)
+
+   O logo do splash está de fora: é branco fixo. Sobre o gradiente vivo nenhum
+   dos três acentos lê, e uma marca que pisca de cor no primeiro quadro do site
+   é marca insegura. Ver .splash__logo.
+
+   O custo é repintura da página a cada quadro, porque --rosa cai em todo
+   elemento com texto. É repintura de texto sobre fundo chapado, barata; o
+   canvas de ruído, que é o caro, só roda enquanto o splash está na tela. */
+
+@property --rosa {
+  syntax: '<color>';
+  inherits: true;
+  initial-value: #FFD60A;
+}
+
+@keyframes ciclo-cor {
+  0%,      27%    { --rosa: #FFD60A; }
+  33.34%,  60.34% { --rosa: #FF0D8C; }
+  66.67%,  93.67% { --rosa: #FF2E2E; }
+  100%            { --rosa: #FFD60A; }
+}
+
+:root { animation: ciclo-cor 48s linear infinite; }
+
 /* ---------- variantes para teste ----------
-   Experimentos de cor pendurados em ?texto= e ?fundo= na URL, lidos por um
-   script no <head> de cada página. Não mudam o padrão: servem para comparar o
-   mesmo site lado a lado antes de escolher.
+   Experimentos pendurados em ?texto= e ?fundo= na URL, lidos por um script no
+   <head> de cada página. Servem para comparar o mesmo site lado a lado.
 
      ?texto=amarelo        ?fundo=grafite
-     ?texto=vermelho       ?fundo=noite
-                           ?fundo=creme
+     ?texto=rosa           ?fundo=noite
+     ?texto=vermelho       ?fundo=creme
 
-   Combinam: ?texto=amarelo&fundo=noite. Como todo texto do site aponta para
-   --rosa e todo fundo escuro para --ink, trocar esses dois tokens troca tudo.
-   Para fixar uma escolha, o valor sobe para o :root lá em cima e este bloco sai. */
+   Combinam: ?texto=rosa&fundo=noite. Qualquer ?texto= desliga o ciclo — é o
+   ponto: comparar precisa de cor parada. */
 
-:root[data-texto="amarelo"]  { --rosa: #FFD60A; --rosa-rgb: 255, 214, 10; }
-:root[data-texto="vermelho"] { --rosa: #FF2E2E; --rosa-rgb: 255, 46, 46; }
+:root[data-texto] { animation: none; }
+
+:root[data-texto="amarelo"]  { --rosa: #FFD60A; }
+:root[data-texto="rosa"]     { --rosa: #FF0D8C; }
+:root[data-texto="vermelho"] { --rosa: #FF2E2E; }
 
 :root[data-fundo="grafite"] { --ink: #16161a; }
 :root[data-fundo="noite"]   { --ink: #0a1020; }
@@ -142,10 +195,10 @@ button { font: inherit; color: inherit; }
   font-weight: 500;
   letter-spacing: .28em;
   text-transform: uppercase;
-  color: rgba(var(--rosa-rgb), .45);
+  color: color-mix(in srgb, var(--rosa) 45%, transparent);
 }
 .label--sm { font-size: 11px; letter-spacing: .3em; }
-.label--strong { font-weight: 600; color: rgba(var(--rosa-rgb), .82); }
+.label--strong { font-weight: 600; color: color-mix(in srgb, var(--rosa) 82%, transparent); }
 
 /* texto pintado pelo gradiente heat */
 .heat-text {
@@ -179,6 +232,11 @@ button { font: inherit; color: inherit; }
   /* a barra não tem fundo: o conteúdo passa por baixo dela */
   background: transparent;
   padding: 14px var(--pad-x);
+  /* A barra passa por cima de fotograma, e agora a cor do texto anda. Sobre um
+     still claro nenhum dos três acentos lê — a sombra é o que segura logo e
+     nav ali sem devolver a faixa preta que foi tirada de propósito. Mesma
+     solução do .splash__stage. */
+  filter: drop-shadow(0 1px 10px rgba(0, 0, 0, .55));
   transition: transform .45s var(--ease-reveal);
 }
 .site-header.is-hidden { transform: translateY(-115%); }
@@ -233,12 +291,12 @@ button { font: inherit; color: inherit; }
 .lang__btn {
   background: none; border: none; padding: 0; margin: 0;
   cursor: pointer;
-  color: rgba(var(--rosa-rgb), .45);
+  color: color-mix(in srgb, var(--rosa) 45%, transparent);
   letter-spacing: inherit;
   transition: color .3s;
 }
 .lang__btn.is-on { color: var(--rosa); }
-.lang__sep { color: rgba(var(--rosa-rgb), .4); }
+.lang__sep { color: color-mix(in srgb, var(--rosa) 40%, transparent); }
 
 /* ---------- menu (overlay) ---------- */
 .menu {
@@ -263,7 +321,7 @@ button { font: inherit; color: inherit; }
 .pill-btn {
   background: none; border: 1px solid rgba(255, 255, 255, .28);
   border-radius: 999px; padding: 7px 14px; cursor: pointer;
-  color: rgba(var(--rosa-rgb), .75);
+  color: color-mix(in srgb, var(--rosa) 75%, transparent);
   font-family: var(--font-label);
   font-size: 11px; letter-spacing: .2em; text-transform: uppercase;
   transition: color .3s, border-color .3s;
@@ -304,10 +362,10 @@ button { font: inherit; color: inherit; }
   font-size: 11px;
   letter-spacing: .24em;
   text-transform: uppercase;
-  color: rgba(var(--rosa-rgb), .55);
+  color: color-mix(in srgb, var(--rosa) 55%, transparent);
 }
 .menu__social { display: flex; gap: 26px; }
-.menu__social a { color: rgba(var(--rosa-rgb), .7); text-decoration: none; }
+.menu__social a { color: color-mix(in srgb, var(--rosa) 70%, transparent); text-decoration: none; }
 .menu__social a:hover { color: var(--rosa); }
 
 /* ---------- footer ---------- */
@@ -332,7 +390,7 @@ button { font: inherit; color: inherit; }
   font-weight: 600;
   letter-spacing: .26em;
   text-transform: uppercase;
-  color: rgba(var(--rosa-rgb), .82);
+  color: color-mix(in srgb, var(--rosa) 82%, transparent);
 }
 .site-footer__logo {
   height: clamp(52px, 6vw, 80px);
@@ -347,7 +405,7 @@ button { font: inherit; color: inherit; }
   font-size: 13px;
   letter-spacing: .14em;
   text-transform: uppercase;
-  color: rgba(var(--rosa-rgb), .82);
+  color: color-mix(in srgb, var(--rosa) 82%, transparent);
   text-decoration: none;
   transition: color .3s;
 }
@@ -357,7 +415,7 @@ button { font: inherit; color: inherit; }
   margin-top: 72px;
   font-size: 11px;
   letter-spacing: .3em;
-  color: rgba(var(--rosa-rgb), .5);
+  color: color-mix(in srgb, var(--rosa) 50%, transparent);
 }
 
 /* =========================================================================
@@ -423,16 +481,17 @@ button { font: inherit; color: inherit; }
 .splash__logo {
   /* 3.5 é a proporção da tinta do lockup */
   height: calc(min(620px, 72vw) / 3.5);
-  color: var(--rosa);
+  /* Branco, fora do ciclo de cor, pelo mesmo motivo medido do verbete abaixo:
+     o fundo é um gradiente sorteado a cada visita, claro em boa parte do
+     quadro, e nenhum dos três acentos lê sobre claro — o rosa dá 1,2 ali.
+     Branco com a sombra do palco lê sobre claro e sobre escuro. */
+  color: #fff;
   transition: opacity .5s ease;
   user-select: none;
 }
 
-/* O verbete é a única coisa do site que não é rosa, e por um motivo medido: o
-   fundo do splash é um gradiente sorteado a cada visita, claro em boa parte do
-   quadro. Rosa sobre as áreas claras dá 1,2 de contraste. Branco com a sombra
-   do palco lê sobre claro e sobre escuro — é a única cor que serve nos dois.
-   Para trocar por preto, é esta linha e a sombra do .splash__stage. */
+/* Branco junto com o logo, e pela mesma medida. Para trocar os dois por preto,
+   é esta linha, a do .splash__logo e a sombra do .splash__stage. */
 .splash__def {
   display: flex;
   flex-direction: column;
@@ -524,7 +583,7 @@ button { font: inherit; color: inherit; }
 }
 .film__meta {
   font-size: 11px; font-weight: 600; letter-spacing: .3em;
-  text-transform: uppercase; color: rgba(var(--rosa-rgb), .72);
+  text-transform: uppercase; color: color-mix(in srgb, var(--rosa) 72%, transparent);
   /* a folga é acima: a ficha vem depois do título e da barra de acento.
      Quando ela ficava acima do título, esta margem era margin-bottom e passou
      a encostar na barra quando a ordem inverteu. */
@@ -577,7 +636,7 @@ button { font: inherit; color: inherit; }
   transform: translateY(-50%);
   z-index: 4;
   background: none; border: none;
-  color: rgba(var(--rosa-rgb), .9);
+  color: color-mix(in srgb, var(--rosa) 90%, transparent);
   cursor: pointer;
   padding: 14px;
   filter: drop-shadow(0 2px 12px rgba(0, 0, 0, .5));
@@ -599,7 +658,7 @@ button { font: inherit; color: inherit; }
 .back-link {
   display: inline-flex; align-items: center; gap: 10px;
   font-size: 12px; font-weight: 500; letter-spacing: .26em; text-transform: uppercase;
-  color: rgba(var(--rosa-rgb), .55);
+  color: color-mix(in srgb, var(--rosa) 55%, transparent);
   text-decoration: none;
   margin-bottom: 26px;
 }
@@ -607,7 +666,7 @@ button { font: inherit; color: inherit; }
 
 .project-head__meta {
   font-size: 12px; font-weight: 500; letter-spacing: .26em; text-transform: uppercase;
-  color: rgba(var(--rosa-rgb), .55);
+  color: color-mix(in srgb, var(--rosa) 55%, transparent);
   margin-bottom: 18px;
   display: flex; gap: 14px; align-items: center; flex-wrap: wrap;
 }
@@ -643,7 +702,7 @@ button { font: inherit; color: inherit; }
 .project-body__text {
   font-size: 16px;
   line-height: 1.6;
-  color: rgba(var(--rosa-rgb), .9);
+  color: color-mix(in srgb, var(--rosa) 90%, transparent);
   max-width: 56ch;
 }
 .project-body__block {
@@ -677,7 +736,7 @@ button { font: inherit; color: inherit; }
 .info-head__right {
   display: flex; align-items: baseline; gap: 22px;
   font-size: 12px; font-weight: 500; letter-spacing: .28em; text-transform: uppercase;
-  color: rgba(var(--rosa-rgb), .55);
+  color: color-mix(in srgb, var(--rosa) 55%, transparent);
   white-space: nowrap;
 }
 
@@ -696,9 +755,9 @@ button { font: inherit; color: inherit; }
   font-size: clamp(20px, 2vw, 28px);
   line-height: 1.5;
   font-weight: 300;
-  color: rgba(var(--rosa-rgb), .95);
+  color: color-mix(in srgb, var(--rosa) 95%, transparent);
 }
-.lede--dim { color: rgba(var(--rosa-rgb), .72); }
+.lede--dim { color: color-mix(in srgb, var(--rosa) 72%, transparent); }
 
 /* sem a divisória, o que separa uma entrada da outra é só o respiro */
 .row {
@@ -707,33 +766,33 @@ button { font: inherit; color: inherit; }
   align-items: baseline;
   padding: 13px 0;
 }
-.row__year { flex: 0 0 52px; font-size: 12px; font-weight: 600; letter-spacing: .1em; color: rgba(var(--rosa-rgb), .5); }
+.row__year { flex: 0 0 52px; font-size: 12px; font-weight: 600; letter-spacing: .1em; color: color-mix(in srgb, var(--rosa) 50%, transparent); }
 .row__main { flex: 1 1 auto; }
 .row__title { font-size: 16px; font-weight: 500; }
 .row__role {
   margin-top: 5px;
   font-size: 12px; letter-spacing: .14em; text-transform: uppercase;
-  color: rgba(var(--rosa-rgb), .5);
+  color: color-mix(in srgb, var(--rosa) 50%, transparent);
 }
 .row__type {
   flex: 0 0 auto;
   font-size: 12px; letter-spacing: .2em; text-transform: uppercase;
-  color: rgba(var(--rosa-rgb), .55);
+  color: color-mix(in srgb, var(--rosa) 55%, transparent);
   text-align: right;
 }
 
 .row--marco { max-width: 70ch; }
 .row--marco .row__year { font-size: 16px; color: var(--rosa); }
-.row--marco .row__text { flex: 1 1 auto; font-size: 16px; line-height: 1.55; color: rgba(var(--rosa-rgb), .85); }
+.row--marco .row__text { flex: 1 1 auto; font-size: 16px; line-height: 1.55; color: color-mix(in srgb, var(--rosa) 85%, transparent); }
 
 .founder { max-width: 60ch; }
 .founder__name { font-size: 16px; font-weight: 600; }
 .founder__role {
   margin-top: 6px; margin-bottom: 16px;
   font-size: 12px; letter-spacing: .2em; text-transform: uppercase;
-  color: rgba(var(--rosa-rgb), .55);
+  color: color-mix(in srgb, var(--rosa) 55%, transparent);
 }
-.founder__bio { font-size: 16px; line-height: 1.6; color: rgba(var(--rosa-rgb), .82); }
+.founder__bio { font-size: 16px; line-height: 1.6; color: color-mix(in srgb, var(--rosa) 82%, transparent); }
 
 .info-footer { padding: var(--pad-section) var(--pad-x) 44px; }
 .info-footer__grid { display: flex; flex-wrap: wrap; gap: var(--gap-section); }
@@ -753,12 +812,12 @@ button { font: inherit; color: inherit; }
 .sede-switch__btn {
   background: none; border: none; padding: 0; margin: 0;
   cursor: pointer;
-  color: rgba(var(--rosa-rgb), .45);
+  color: color-mix(in srgb, var(--rosa) 45%, transparent);
   letter-spacing: inherit;
   transition: color .3s;
 }
 .sede-switch__btn.is-on { color: var(--rosa); }
-.sede-switch__sep { color: rgba(var(--rosa-rgb), .4); }
+.sede-switch__sep { color: color-mix(in srgb, var(--rosa) 40%, transparent); }
 
 [data-sede-painel][hidden] { display: none; }
 
@@ -775,9 +834,9 @@ button { font: inherit; color: inherit; }
 .impressum-row__label {
   flex: 0 0 200px;
   font-size: 12px; letter-spacing: .14em; text-transform: uppercase;
-  color: rgba(var(--rosa-rgb), .5);
+  color: color-mix(in srgb, var(--rosa) 50%, transparent);
 }
-.impressum-row__value { flex: 1 1 300px; font-size: 16px; color: rgba(var(--rosa-rgb), .9); }
+.impressum-row__value { flex: 1 1 300px; font-size: 16px; color: color-mix(in srgb, var(--rosa) 90%, transparent); }
 
 .info-footer__bottom {
   margin-top: clamp(48px, 7vh, 90px);
@@ -788,9 +847,9 @@ button { font: inherit; color: inherit; }
   display: flex; gap: 26px;
   font-size: 12px; letter-spacing: .2em; text-transform: uppercase;
 }
-.info-footer__links a { color: rgba(var(--rosa-rgb), .7); text-decoration: none; }
+.info-footer__links a { color: color-mix(in srgb, var(--rosa) 70%, transparent); text-decoration: none; }
 .info-footer__links a:hover { color: var(--rosa); }
-.info-footer__legal { margin-top: 40px; font-size: 12px; letter-spacing: .28em; color: rgba(var(--rosa-rgb), .5); }
+.info-footer__legal { margin-top: 40px; font-size: 12px; letter-spacing: .28em; color: color-mix(in srgb, var(--rosa) 50%, transparent); }
 
 /* =========================================================================
    RESPONSIVO
