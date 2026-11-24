@@ -13,14 +13,13 @@
 <body>
 
 <!-- ======================= header ======================= -->
-<header class="site-header site-header--glass">
+<header class="site-header">
   <a class="site-header__logo" href="index.html" aria-label="Inflamável — início">
     <canvas data-header-logo data-logo="assets/img/logo-white.png" width="3307" height="945"></canvas>
   </a>
   <div class="site-header__right">
     <nav class="nav">
       <a class="nav__link" href="projetos.html">Filmes</a>
-      <a class="nav__link" href="#">Desenvolvimento</a>
       <a class="nav__link" href="info.html">Info</a>
     </nav>
     <div class="lang">
@@ -33,110 +32,99 @@
 
 
 <!-- ======================= listagem =======================
-     Um card por filme. Os dados também existem em data/films.js, que alimenta
-     a página de detalhe — ao editar um filme, atualize os dois lugares.
+     Um card por filme, do mais recente para o mais antigo. A sinopse vive só
+     na página individual. Os dados também existem em data/films.js, que
+     alimenta essa página — ao editar um filme, atualize os dois lugares.
      ======================================================= -->
 <main>
 
-  <a class="film" href="projeto.html?f=madame-sata">
-    <img class="film__img" src="assets/img/madame-sata.jpg" alt="Madame Satã">
+  <a class="film" href="projeto.html?f=motel-destino">
+    <img class="film__img" src="assets/img/motel-destino3.jpg" alt="Motel Destino">
     <div class="film__scrim"></div>
-    <div class="film__num">01</div>
     <div class="film__body">
+      <div class="film__title">Motel Destino</div>
+      <div class="film__accent"></div>
       <div class="film__meta">
         <span>Longa</span><span class="dot-sep"></span>
-        <span>2002</span><span class="dot-sep"></span>
-        <span>Brasil / França</span>
+        <span>2024</span><span class="dot-sep"></span>
+        <span>Brasil / França / Alemanha / Reino Unido</span><span class="dot-sep"></span>
+        <span>Dir. Karim Aïnouz</span>
       </div>
-      <div class="film__title">Madame Satã</div>
-      <div class="film__accent"></div>
-      <div class="film__synopsis">No Rio de Janeiro dos anos 1930, na boemia da Lapa, João Francisco dos Santos transita entre o crime e os palcos de cabaré até se transformar no lendário Madame Satã.</div>
-      <div class="film__director">Dir. Karim Aïnouz</div>
-    </div>
-  </a>
-
-  <a class="film" href="projeto.html?f=ceu-de-suely">
-    <img class="film__img" src="assets/img/ceu-de-suely.jpg" alt="O Céu de Suely">
-    <div class="film__scrim"></div>
-    <div class="film__num">02</div>
-    <div class="film__body">
-      <div class="film__meta">
-        <span>Longa</span><span class="dot-sep"></span>
-        <span>2006</span><span class="dot-sep"></span>
-        <span>Brasil / Alemanha / França / Portugal</span>
-      </div>
-      <div class="film__title">O Céu de Suely</div>
-      <div class="film__accent"></div>
-      <div class="film__synopsis">De volta à pequena Iguatu, no sertão do Ceará, uma jovem mãe abandonada decide rifar uma noite com o próprio corpo, sob o codinome Suely, para recomeçar em outro lugar.</div>
-      <div class="film__director">Dir. Karim Aïnouz</div>
-    </div>
-  </a>
-
-  <a class="film" href="projeto.html?f=viajo-preciso">
-    <img class="film__img" src="assets/img/viajo-preciso.jpg" alt="Viajo Porque Preciso, Volto Porque Te Amo">
-    <div class="film__scrim"></div>
-    <div class="film__num">03</div>
-    <div class="film__body">
-      <div class="film__meta">
-        <span>Longa</span><span class="dot-sep"></span>
-        <span>2009</span><span class="dot-sep"></span>
-        <span>Brasil</span>
-      </div>
-      <div class="film__title">Viajo Porque Preciso, Volto Porque Te Amo</div>
-      <div class="film__accent"></div>
-      <div class="film__synopsis">Um geólogo atravessa o sertão nordestino avaliando o traçado de um canal que vai desviar as águas de um rio, e a solidão da paisagem árida passa a espelhar seu próprio esvaziamento interior.</div>
-      <div class="film__director">Dir. Karim Aïnouz e Marcelo Gomes</div>
-    </div>
-  </a>
-
-  <a class="film" href="projeto.html?f=praia-do-futuro">
-    <img class="film__img" src="assets/img/praia-do-futuro.jpg" alt="Praia do Futuro">
-    <div class="film__scrim"></div>
-    <div class="film__num">04</div>
-    <div class="film__body">
-      <div class="film__meta">
-        <span>Longa</span><span class="dot-sep"></span>
-        <span>2014</span><span class="dot-sep"></span>
-        <span>Brasil / Alemanha</span>
-      </div>
-      <div class="film__title">Praia do Futuro</div>
-      <div class="film__accent"></div>
-      <div class="film__synopsis">Um salva-vidas de Fortaleza, abalado por não conseguir salvar um turista alemão, apaixona-se pelo amigo da vítima e muda-se para Berlim, deixando para trás o irmão mais novo.</div>
-      <div class="film__director">Dir. Karim Aïnouz</div>
     </div>
   </a>
 
   <a class="film" href="projeto.html?f=vida-invisivel">
     <img class="film__img" src="assets/img/vida-invisivel.jpg" alt="A Vida Invisível">
     <div class="film__scrim"></div>
-    <div class="film__num">05</div>
     <div class="film__body">
+      <div class="film__title">A Vida Invisível</div>
+      <div class="film__accent"></div>
       <div class="film__meta">
         <span>Longa</span><span class="dot-sep"></span>
         <span>2019</span><span class="dot-sep"></span>
-        <span>Brasil / Alemanha</span>
+        <span>Brasil / Alemanha</span><span class="dot-sep"></span>
+        <span>Dir. Karim Aïnouz</span>
       </div>
-      <div class="film__title">A Vida Invisível</div>
-      <div class="film__accent"></div>
-      <div class="film__synopsis">No Rio de Janeiro dos anos 1950, duas irmãs são cruelmente separadas por uma família patriarcal e passam décadas acreditando em versões falsas do destino uma da outra.</div>
-      <div class="film__director">Dir. Karim Aïnouz</div>
     </div>
   </a>
 
-  <a class="film" href="projeto.html?f=motel-destino">
-    <img class="film__img" src="assets/img/motel-destino3.jpg" alt="Motel Destino">
+  <a class="film" href="projeto.html?f=praia-do-futuro">
+    <img class="film__img" src="assets/img/praia-do-futuro.jpg" alt="Praia do Futuro">
     <div class="film__scrim"></div>
-    <div class="film__num">06</div>
     <div class="film__body">
+      <div class="film__title">Praia do Futuro</div>
+      <div class="film__accent"></div>
       <div class="film__meta">
         <span>Longa</span><span class="dot-sep"></span>
-        <span>2024</span><span class="dot-sep"></span>
-        <span>Brasil / França / Alemanha / Reino Unido</span>
+        <span>2014</span><span class="dot-sep"></span>
+        <span>Brasil / Alemanha</span><span class="dot-sep"></span>
+        <span>Dir. Karim Aïnouz</span>
       </div>
-      <div class="film__title">Motel Destino</div>
+    </div>
+  </a>
+
+  <a class="film" href="projeto.html?f=viajo-preciso">
+    <img class="film__img" src="assets/img/viajo-preciso.jpg" alt="Viajo Porque Preciso, Volto Porque Te Amo">
+    <div class="film__scrim"></div>
+    <div class="film__body">
+      <div class="film__title">Viajo Porque Preciso, Volto Porque Te Amo</div>
       <div class="film__accent"></div>
-      <div class="film__synopsis">Sob o céu em chamas do litoral cearense, o Motel Destino torna-se palco de desejo, poder e violência quando a chegada de um jovem forasteiro muda para sempre a rotina do lugar.</div>
-      <div class="film__director">Dir. Karim Aïnouz</div>
+      <div class="film__meta">
+        <span>Longa</span><span class="dot-sep"></span>
+        <span>2009</span><span class="dot-sep"></span>
+        <span>Brasil</span><span class="dot-sep"></span>
+        <span>Dir. Karim Aïnouz e Marcelo Gomes</span>
+      </div>
+    </div>
+  </a>
+
+  <a class="film" href="projeto.html?f=ceu-de-suely">
+    <img class="film__img" src="assets/img/ceu-de-suely.jpg" alt="O Céu de Suely">
+    <div class="film__scrim"></div>
+    <div class="film__body">
+      <div class="film__title">O Céu de Suely</div>
+      <div class="film__accent"></div>
+      <div class="film__meta">
+        <span>Longa</span><span class="dot-sep"></span>
+        <span>2006</span><span class="dot-sep"></span>
+        <span>Brasil / Alemanha / França / Portugal</span><span class="dot-sep"></span>
+        <span>Dir. Karim Aïnouz</span>
+      </div>
+    </div>
+  </a>
+
+  <a class="film" href="projeto.html?f=madame-sata">
+    <img class="film__img" src="assets/img/madame-sata.jpg" alt="Madame Satã">
+    <div class="film__scrim"></div>
+    <div class="film__body">
+      <div class="film__title">Madame Satã</div>
+      <div class="film__accent"></div>
+      <div class="film__meta">
+        <span>Longa</span><span class="dot-sep"></span>
+        <span>2002</span><span class="dot-sep"></span>
+        <span>Brasil / França</span><span class="dot-sep"></span>
+        <span>Dir. Karim Aïnouz</span>
+      </div>
     </div>
   </a>
 
@@ -159,7 +147,7 @@
       </div>
     </div>
   </div>
-  <div class="site-footer__legal">© INFLAMÁVEL 2026 — CEARÁ / BERLIN</div>
+  <div class="site-footer__legal">© INFLAMÁVEL 2026 — FORTALEZA / BERLIM</div>
 </footer>
 
 <!-- ======================= menu ======================= -->
@@ -180,7 +168,7 @@
       <a href="#">Vimeo</a>
       <a href="#">Contato</a>
     </div>
-    <div>Ceará / Berlin</div>
+    <div>Fortaleza / Berlim</div>
   </div>
 </div>
 

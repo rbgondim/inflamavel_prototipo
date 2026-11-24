@@ -10,7 +10,6 @@ window.INF = window.INF || {};
   'use strict';
 
   var FLOW_SPEED = 2.3;   /* velocidade do campo de ruído no splash */
-  var LOGO_VISIBILITY = 1; /* 0 = logo recebe a cor crua do gradiente, 1 = quase branco */
   var GRAIN = 1;           /* opacidade do grão sobre o splash (0–1) */
   var START_ON_HOME = false;
 
@@ -79,15 +78,12 @@ window.INF = window.INF || {};
 
     if (this.grain) this.grain.style.opacity = String(GRAIN);
 
+    this.rosa = getComputedStyle(document.documentElement)
+      .getPropertyValue('--rosa').trim() || '#FF0D8C';
+
     this.logoImg = new Image();
     this.logoImg.onload = function () { self.logoReady = true; };
     this.logoImg.src = 'assets/img/logo-white.png';
-
-    /* canvas de baixa resolução onde o gradiente do logo é calculado antes de
-       ser ampliado — 190x54 é suficiente porque o resultado é suave */
-    this.lf = document.createElement('canvas');
-    this.lf.width = 190;
-    this.lf.height = 54;
 
     this.bindSplash();
     this.bindCarousel();
@@ -167,41 +163,21 @@ window.INF = window.INF || {};
     ctx.putImageData(img, 0, 0);
   };
 
-  /* O logo do splash é o gradiente recortado pela silhueta do PNG. No hover a
-     silhueta faz crossfade para a palavra ENTER_LABEL. */
-  Home.prototype.drawLogo = function (t, mx, my) {
+  /* O logo do splash é rosa chapado — a mesma cor do resto do site — recortado
+     pela silhueta do PNG. No hover a silhueta faz crossfade para ENTER_LABEL.
+     Antes aqui o logo recebia o gradiente animado amostrado na posição de tela,
+     o que custava um loop por pixel a cada quadro; com cor chapada o loop sai. */
+  Home.prototype.drawLogo = function () {
     var cv = this.logoCanvas;
     if (!cv || !this.logoReady) return;
     var rect = cv.getBoundingClientRect();
     if (!rect.width) return;
 
-    var lf = this.lf, lw = lf.width, lh = lf.height;
-    var lctx = lf.getContext('2d');
-    var img = lctx.createImageData(lw, lh), d = img.data;
-    var k = 0.14 + LOGO_VISIBILITY * 0.78;
-    var iw = window.innerWidth, ih = window.innerHeight;
-
-    /* amostra o campo nas coordenadas de tela ocupadas pelo logo, para que ele
-       pareça recortado do fundo e não pintado por cima */
-    for (var y = 0; y < lh; y++) {
-      var sy = ((rect.top + (y / lh) * rect.height) / ih) * SY;
-      for (var x = 0; x < lw; x++) {
-        var sx = ((rect.left + (x / lw) * rect.width) / iw) * SX;
-        var n = this.field.field(sx, sy, t, mx, my);
-        var c = this.field.rampColor(this.field.shape(n));
-        var i = (y * lw + x) * 4;
-        d[i] = c[0] + (255 - c[0]) * k;
-        d[i + 1] = c[1] + (255 - c[1]) * k;
-        d[i + 2] = c[2] + (255 - c[2]) * k;
-        d[i + 3] = 255;
-      }
-    }
-    lctx.putImageData(img, 0, 0);
-
     var ctx = cv.getContext('2d');
     ctx.clearRect(0, 0, cv.width, cv.height);
     ctx.imageSmoothingEnabled = true;
-    ctx.drawImage(lf, 0, 0, cv.width, cv.height);
+    ctx.fillStyle = this.rosa;
+    ctx.fillRect(0, 0, cv.width, cv.height);
 
     /* p vai de 0 (logo) a 1 (palavra), com easing exponencial */
     var target = this.hoverLogo ? 1 : 0;
@@ -225,7 +201,7 @@ window.INF = window.INF || {};
       mc.font = '700 ' + Math.round(cv.height * ENTER_SIZE) + 'px "Serial B", serif';
       mc.textAlign = 'center';
       mc.textBaseline = 'middle';
-      mc.fillStyle = '#fff';
+      mc.fillStyle = '#fff';  /* máscara: a cor vem do preenchimento acima */
       var m = mc.measureText(ENTER_LABEL);
       var asc = m.actualBoundingBoxAscent || 0, desc = m.actualBoundingBoxDescent || 0;
       mc.fillText(ENTER_LABEL, cv.width / 2, 450 + (asc - desc) / 2);
@@ -292,7 +268,7 @@ window.INF = window.INF || {};
       var mx = this.cur.x / window.innerWidth;
       var my = this.cur.y / window.innerHeight;
       if (now - this._lastBg > 32) { this.renderBg(t, mx, my); this._lastBg = now; }
-      this.drawLogo(t, mx, my);
+      this.drawLogo();
     }
     requestAnimationFrame(this.loop);
   };
