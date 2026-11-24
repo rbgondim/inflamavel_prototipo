@@ -8,9 +8,15 @@
 <link rel="icon" href="assets/img/logo-white.png">
 <link rel="preload" href="assets/fonts/serial-b-700.ttf" as="font" type="font/ttf" crossorigin>
 <link rel="preload" href="assets/fonts/geist-latin.woff2" as="font" type="font/woff2" crossorigin>
-<script>/* variantes de teste: ?texto= e ?fundo= — ver css/site.css */
+<script>/* Cor do load: rodízio entre as três, antes da primeira pintura.
+   Inline e no head de propósito — em arquivo à parte a página sairia na cor do
+   css e trocaria na cara de quem está olhando. ?texto= força uma. Ver css/site.css */
 (function(){var p=new URLSearchParams(location.search),d=document.documentElement;
-["texto","fundo"].forEach(function(k){var v=p.get(k);if(v)d.setAttribute("data-"+k,v);});})();</script>
+var f=p.get("fundo");if(f)d.setAttribute("data-fundo",f);
+var t=p.get("texto"),c=["amarelo","rosa","vermelho"];
+if(!t){var i;try{i=parseInt(localStorage.getItem("inf:cor"),10);if(isNaN(i))i=-1;i=(i+1)%c.length;localStorage.setItem("inf:cor",i);}
+catch(e){i=Math.floor(Math.random()*c.length);}t=c[i];}
+d.setAttribute("data-texto",t);})();</script>
 <link rel="stylesheet" href="css/site.css">
 </head>
 <body>

@@ -26,19 +26,18 @@
      é cor de marca em movimento, aqui é cor que precisa segurar contraste
      sobre o preto.
 
-     O nome continua --rosa por histórico: hoje o valor passeia pelos três
-     acentos (ver "ciclo de cor" abaixo) e o rosa é só um deles. Renomear
+     O nome continua --rosa por histórico: hoje o valor é um dos três acentos,
+     sorteado em rodízio a cada load, e o rosa é só um deles. Renomear
      custaria trinta linhas de diff para não mudar nada na tela.
 
-     O valor aqui é o estado de repouso: é o que aparece quando o ciclo está
-     desligado (?texto=, prefers-reduced-motion, navegador sem @property).
-     Amarelo por medida — sobre o preto dá 11,46 de contraste contra 4,51 do
-     rosa, e a diferença aparece justamente onde o site mais sofre, texto
-     sobre fotograma.
+     O valor aqui é só a rede: na prática o script do <head> sobrescreve a
+     cada load (ver "cor do load" abaixo). Amarelo porque é o que mede melhor
+     sobre o preto — 11,46 de contraste contra 4,51 do rosa, e a diferença
+     aparece justamente onde o site mais sofre, texto sobre fotograma.
 
      Usos com opacidade vão por color-mix, não por rgba(): rgba() precisava de
-     um segundo token com os canais soltos (--rosa-rgb), e um token paralelo
-     não acompanha a cor animada. color-mix come a cor pronta. */
+     um segundo token com os canais soltos (--rosa-rgb), e dois tokens para
+     uma cor são um para esquecer de trocar. color-mix come a cor pronta. */
   --rosa: #FFD60A;
 
   /* tipografia */
@@ -86,61 +85,34 @@
   --ease-pop: cubic-bezier(.34, 1.4, .5, 1);
 }
 
-/* ---------- ciclo de cor ----------
-   A cor de texto do site não é mais uma escolha: ela anda. Amarelo, rosa,
-   vermelho, de volta ao amarelo — 13s parado em cada um e 3s de travessia, 48s
-   a volta inteira. Quem chega vê amarelo; quem fica vê o site mudar de humor.
+/* ---------- cor do load ----------
+   A cor de texto do site não é uma escolha fixa: cada carregamento chega numa
+   das três. Amarelo, rosa, vermelho, em rodízio — nunca a mesma duas vezes
+   seguidas, que é o que separa "mudou" de "não mudou".
 
-   Isso funciona porque o site inteiro aponta para um único token. Animar
-   custom property exige registrar com @property: sem o syntax '<color>' o
-   navegador trata o valor como texto e troca aos saltos, sem interpolar.
+   Quem decide é o script no <head> de cada página, antes da folha de estilo:
+   ele avança o rodízio e põe data-texto no <html>. Precisa ser ali e inline;
+   um arquivo à parte ou um script no fim do body deixariam a primeira pintura
+   sair na cor errada e trocariam na cara de quem está olhando.
 
-   Uma animação vence a declaração do :root, então o valor lá em cima é o
-   repouso, não o padrão — é o que fica quando o ciclo não roda:
+   O valor do :root lá em cima é o que fica se o script não rodar.
 
-     ?texto=amarelo | rosa | vermelho   fixa um dos três
-     prefers-reduced-motion             cai no último quadro (amarelo)
-     navegador sem @property            fica no valor do :root (amarelo)
+     ?texto=amarelo | rosa | vermelho   força uma das três e não mexe no rodízio
 
    O logo do splash está de fora: é branco fixo. Sobre o gradiente vivo nenhum
-   dos três acentos lê, e uma marca que pisca de cor no primeiro quadro do site
-   é marca insegura. Ver .splash__logo.
+   dos três acentos lê, e uma marca que troca de cor a cada visita é marca
+   insegura. Ver .splash__logo.
 
-   O custo é repintura da página a cada quadro, porque --rosa cai em todo
-   elemento com texto. É repintura de texto sobre fundo chapado, barata; o
-   canvas de ruído, que é o caro, só roda enquanto o splash está na tela. */
-
-@property --rosa {
-  syntax: '<color>';
-  inherits: true;
-  initial-value: #FFD60A;
-}
-
-@keyframes ciclo-cor {
-  0%,      27%    { --rosa: #FFD60A; }
-  33.34%,  60.34% { --rosa: #FF0D8C; }
-  66.67%,  93.67% { --rosa: #FF2E2E; }
-  100%            { --rosa: #FFD60A; }
-}
-
-:root { animation: ciclo-cor 48s linear infinite; }
-
-/* ---------- variantes para teste ----------
-   Experimentos pendurados em ?texto= e ?fundo= na URL, lidos por um script no
-   <head> de cada página. Servem para comparar o mesmo site lado a lado.
-
-     ?texto=amarelo        ?fundo=grafite
-     ?texto=rosa           ?fundo=noite
-     ?texto=vermelho       ?fundo=creme
-
-   Combinam: ?texto=rosa&fundo=noite. Qualquer ?texto= desliga o ciclo — é o
-   ponto: comparar precisa de cor parada. */
-
-:root[data-texto] { animation: none; }
+   Isso funciona porque o site inteiro aponta para um token só. Os usos com
+   opacidade vão por color-mix e não por rgba(): rgba() pediria um segundo
+   token com os canais soltos, e dois tokens para uma cor é um para esquecer
+   de trocar. */
 
 :root[data-texto="amarelo"]  { --rosa: #FFD60A; }
 :root[data-texto="rosa"]     { --rosa: #FF0D8C; }
 :root[data-texto="vermelho"] { --rosa: #FF2E2E; }
+
+/* fundos, para comparar: ?fundo=grafite | noite | creme */
 
 :root[data-fundo="grafite"] { --ink: #16161a; }
 :root[data-fundo="noite"]   { --ink: #0a1020; }
@@ -232,8 +204,8 @@ button { font: inherit; color: inherit; }
   /* a barra não tem fundo: o conteúdo passa por baixo dela */
   background: transparent;
   padding: 14px var(--pad-x);
-  /* A barra passa por cima de fotograma, e agora a cor do texto anda. Sobre um
-     still claro nenhum dos três acentos lê — a sombra é o que segura logo e
+  /* A barra passa por cima de fotograma, e a cor do texto muda a cada load.
+     Sobre um still claro nenhum dos três lê — a sombra é o que segura logo e
      nav ali sem devolver a faixa preta que foi tirada de propósito. Mesma
      solução do .splash__stage. */
   filter: drop-shadow(0 1px 10px rgba(0, 0, 0, .55));
