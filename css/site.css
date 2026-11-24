@@ -43,6 +43,9 @@
      caixa com margem. A palavra INFLAMÁVEL ocupa metade dessa altura. */
   --logo-h: clamp(52px, 6vw, 88px);
 
+  /* o header flutua, então quem começa com texto precisa descer por conta */
+  --header-h: calc(var(--logo-h) + 28px);
+
   /* Título de tema — as sedes na Info, e as seções que vierem depois.
      Teto calculado para a caixa alta ficar abaixo da do logo: a 1440 o logo dá
      86px de lockup, logo 43px de INFLAMÁVEL, e 58px de Serial B dão 40,6. */
@@ -164,8 +167,10 @@ button { font: inherit; color: inherit; }
 
 /* ---------- header ---------- */
 .site-header {
-  position: sticky;
+  position: fixed;
   top: 0;
+  left: 0;
+  right: 0;
   z-index: 30;
   display: flex;
   align-items: center;
@@ -176,8 +181,6 @@ button { font: inherit; color: inherit; }
   padding: 14px var(--pad-x);
   transition: transform .45s var(--ease-reveal);
 }
-/* na home o header não gruda: ele faz parte do bloco de 100dvh */
-.site-header--static { position: relative; }
 .site-header.is-hidden { transform: translateY(-115%); }
 
 /* O logo era um canvas pintado quadro a quadro em js. Agora é o SVG usado como
@@ -672,7 +675,7 @@ button { font: inherit; color: inherit; }
 .info-head {
   display: flex; align-items: baseline; justify-content: space-between;
   gap: 20px;
-  padding: clamp(48px, 9vh, 120px) var(--pad-x) clamp(24px, 3vh, 40px);
+  padding: calc(var(--header-h) + clamp(24px, 4vh, 56px)) var(--pad-x) clamp(24px, 3vh, 40px);
   border-bottom: 1px solid rgba(255, 255, 255, .1);
 }
 .info-head__title {
