@@ -738,6 +738,36 @@ button { font: inherit; color: inherit; }
 .info-footer { padding: var(--pad-section) var(--pad-x) 44px; }
 .info-footer__grid { display: flex; flex-wrap: wrap; gap: var(--gap-section); }
 
+/* Seletor de sede do impressum. Mesma lógica visual do PT / ENG / GER: o
+   ativo em cheio, o inativo esmaecido, separados por barra. */
+.sede-switch {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 18px;
+  font-family: var(--font-label);
+  font-size: 13px;
+  letter-spacing: .22em;
+  text-transform: uppercase;
+}
+.sede-switch__btn {
+  background: none; border: none; padding: 0; margin: 0;
+  cursor: pointer;
+  color: rgba(var(--rosa-rgb), .45);
+  letter-spacing: inherit;
+  transition: color .3s;
+}
+.sede-switch__btn.is-on { color: var(--rosa); }
+.sede-switch__sep { color: rgba(var(--rosa-rgb), .4); }
+
+[data-sede-painel][hidden] { display: none; }
+
+/* valor ainda não fornecido — some quando o dado real entrar */
+.impressum-row__value--pendente {
+  opacity: .45;
+  font-style: italic;
+}
+
 .impressum-row {
   display: flex; flex-wrap: wrap; gap: 16px; justify-content: space-between;
   padding: 11px 0;

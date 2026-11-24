@@ -188,6 +188,16 @@
     <div class="info-footer__grid">
       <div class="label info-section__label">Impressum</div>
       <div class="info-section__body">
+
+        <!-- A página é uma só; só o impressum se divide, porque registro de
+             empresa é por jurisdição e os dois conjuntos não se fundem. -->
+        <div class="sede-switch" role="tablist" aria-label="Sede do registro">
+          <button class="sede-switch__btn is-on" data-sede="fortaleza" type="button" role="tab" aria-selected="true">Fortaleza</button>
+          <span class="sede-switch__sep">/</span>
+          <button class="sede-switch__btn" data-sede="berlim" type="button" role="tab" aria-selected="false">Berlim</button>
+        </div>
+
+        <div data-sede-painel="fortaleza">
         <div class="impressum-row">
           <div class="impressum-row__label">Razão social</div>
           <div class="impressum-row__value">Cinema Inflamável Produções Cinematográficas LTDA</div>
@@ -220,6 +230,43 @@
           <div class="impressum-row__label">Sócios-administradores</div>
           <div class="impressum-row__value">Karim Aïnouz e Janaina Bernardes</div>
         </div>
+        </div>
+
+        <div data-sede-painel="berlim" hidden>
+        <div class="impressum-row">
+          <div class="impressum-row__label">Firma</div>
+          <div class="impressum-row__value impressum-row__value--pendente">a definir</div>
+        </div>
+        <div class="impressum-row">
+          <div class="impressum-row__label">Rechtsform</div>
+          <div class="impressum-row__value impressum-row__value--pendente">a definir</div>
+        </div>
+        <div class="impressum-row">
+          <div class="impressum-row__label">Vertretungsberechtigter</div>
+          <div class="impressum-row__value impressum-row__value--pendente">a definir</div>
+        </div>
+        <div class="impressum-row">
+          <div class="impressum-row__label">Registergericht</div>
+          <div class="impressum-row__value impressum-row__value--pendente">a definir</div>
+        </div>
+        <div class="impressum-row">
+          <div class="impressum-row__label">Registernummer</div>
+          <div class="impressum-row__value impressum-row__value--pendente">a definir</div>
+        </div>
+        <div class="impressum-row">
+          <div class="impressum-row__label">USt-IdNr.</div>
+          <div class="impressum-row__value impressum-row__value--pendente">a definir</div>
+        </div>
+        <div class="impressum-row">
+          <div class="impressum-row__label">Anschrift</div>
+          <div class="impressum-row__value impressum-row__value--pendente">a definir</div>
+        </div>
+        <div class="impressum-row">
+          <div class="impressum-row__label">Kontakt</div>
+          <div class="impressum-row__value impressum-row__value--pendente">a definir</div>
+        </div>
+        </div>
+
       </div>
     </div>
 
