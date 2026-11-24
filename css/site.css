@@ -185,15 +185,27 @@ button { font: inherit; color: inherit; }
 
 /* O logo era um canvas pintado quadro a quadro em js. Agora é o SVG usado como
    máscara: a cor vem do token, fica nítido em qualquer tamanho e o arquivo é
-   cacheado uma vez só. A proporção 3.5 é a da tinta (793.701 / 226.772). */
+   cacheado uma vez só. A proporção 3.5 é a da tinta (793.701 / 226.772).
+
+   As oito linhas de máscara são propositalmente longhand. O shorthand
+   `mask: url() no-repeat center / contain` não tem o mask-size lido pelo
+   -webkit- do Safari, e sem tamanho o logo desaparece por completo em vez de
+   degradar. Pelo mesmo motivo o arquivo carrega width e height além do
+   viewBox: sem dimensão intrínseca o Safari não dimensiona a máscara. */
 .site-header__logo {
   display: block;
   flex: none;
   height: var(--logo-h);
   width: calc(var(--logo-h) * 3.5);
   background: var(--rosa);
-  -webkit-mask: url('../assets/img/logo.svg') no-repeat center / contain;
-  mask: url('../assets/img/logo.svg') no-repeat center / contain;
+  -webkit-mask-image: url('../assets/img/logo.svg');
+  -webkit-mask-repeat: no-repeat;
+  -webkit-mask-position: center;
+  -webkit-mask-size: contain;
+  mask-image: url('../assets/img/logo.svg');
+  mask-repeat: no-repeat;
+  mask-position: center;
+  mask-size: contain;
 }
 
 .site-header__right { display: flex; align-items: center; gap: clamp(20px, 3.2vw, 48px); }
@@ -335,8 +347,14 @@ button { font: inherit; color: inherit; }
   height: clamp(52px, 6vw, 80px);
   width: calc(clamp(52px, 6vw, 80px) * 3.5);
   background: var(--rosa);
-  -webkit-mask: url('../assets/img/logo.svg') no-repeat center / contain;
-  mask: url('../assets/img/logo.svg') no-repeat center / contain;
+  -webkit-mask-image: url('../assets/img/logo.svg');
+  -webkit-mask-repeat: no-repeat;
+  -webkit-mask-position: center;
+  -webkit-mask-size: contain;
+  mask-image: url('../assets/img/logo.svg');
+  mask-repeat: no-repeat;
+  mask-position: center;
+  mask-size: contain;
 }
 
 .site-footer__cols { display: flex; gap: clamp(48px, 8vw, 120px); flex-wrap: wrap; }
@@ -424,8 +442,14 @@ button { font: inherit; color: inherit; }
   /* 3.5 é a proporção da tinta do lockup */
   height: calc(min(620px, 72vw) / 3.5);
   background: var(--rosa);
-  -webkit-mask: url('../assets/img/logo.svg') no-repeat center / contain;
-  mask: url('../assets/img/logo.svg') no-repeat center / contain;
+  -webkit-mask-image: url('../assets/img/logo.svg');
+  -webkit-mask-repeat: no-repeat;
+  -webkit-mask-position: center;
+  -webkit-mask-size: contain;
+  mask-image: url('../assets/img/logo.svg');
+  mask-repeat: no-repeat;
+  mask-position: center;
+  mask-size: contain;
   transition: opacity .5s ease;
   user-select: none;
 }
@@ -530,7 +554,10 @@ button { font: inherit; color: inherit; }
 .film__meta {
   font-size: 11px; font-weight: 600; letter-spacing: .3em;
   text-transform: uppercase; color: rgba(var(--rosa-rgb), .72);
-  margin-bottom: 14px;
+  /* a folga é acima: a ficha vem depois do título e da barra de acento.
+     Quando ela ficava acima do título, esta margem era margin-bottom e passou
+     a encostar na barra quando a ordem inverteu. */
+  margin-top: 16px;
   display: flex; gap: 14px; align-items: center; flex-wrap: wrap;
 }
 .film__title {
@@ -552,11 +579,6 @@ button { font: inherit; color: inherit; }
 }
 .film.is-active .film__accent { width: clamp(70px, 9vw, 150px); }
 
-.film__director {
-  margin-top: 16px;
-  font-size: 11px; letter-spacing: .22em; text-transform: uppercase;
-  color: rgba(var(--rosa-rgb), .55);
-}
 
 /* =========================================================================
    PROJETO (detalhe) — página clara
