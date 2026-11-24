@@ -18,9 +18,7 @@
 
     <!-- ======================= header ======================= -->
     <header class="site-header site-header--static">
-      <a class="site-header__logo" href="index.html" aria-label="Inflamável — início">
-        <canvas data-header-logo data-logo="assets/img/logo-white.png" width="3307" height="945"></canvas>
-      </a>
+      <a class="site-header__logo" href="index.html" aria-label="Cinema Inflamável — início"></a>
       <div class="site-header__right">
         <nav class="nav">
           <a class="nav__link" href="projetos.html">Filmes</a>
@@ -100,7 +98,18 @@
 <div class="splash">
   <canvas class="splash__bg" aria-hidden="true"></canvas>
   <div class="splash__grain" aria-hidden="true"></div>
-  <canvas class="splash__logo" width="3307" height="945" role="button" tabindex="0" aria-label="Entrar no site"></canvas>
+
+  <!-- Logo e verbete ocupam a mesma célula do grid e fazem crossfade no hover.
+       Era tudo desenhado em canvas; virou DOM quando o logo passou a ser SVG,
+       e com isso o verbete é texto de verdade, selecionável e legível. -->
+  <div class="splash__stage" role="button" tabindex="0" aria-label="Entrar no site">
+    <div class="splash__logo" role="img" aria-label="Cinema Inflamável"></div>
+    <div class="splash__def" aria-hidden="true">
+      <p class="splash__def-word">inflamável</p>
+      <p class="splash__def-gram">adjective / [ masculine-feminine ] / ĩfla'maveʊ</p>
+      <p class="splash__def-sense">combustible, easily ignited and aroused to passion</p>
+    </div>
+  </div>
 </div>
 
 <!-- ======================= menu ======================= -->

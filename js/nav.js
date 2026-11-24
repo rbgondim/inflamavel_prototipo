@@ -82,13 +82,11 @@ window.INF = window.INF || {};
     }
   }
 
-  /* Liga o logo animado do header. Cada página chama isto passando a própria
-     velocidade de fluxo. */
+  /* Mantém a variável --heat viva, que é o que os hovers do menu e da navegação
+     consomem. Cada página chama isto com a própria velocidade de fluxo. */
   window.INF.initChrome = function (flowSpeed) {
-    var canvas = document.querySelector('[data-header-logo]');
     var chrome = new window.INF.HeatChrome({
       field: window.INF.field || (window.INF.field = new window.INF.HeatField()),
-      logoCanvas: canvas,
       flowSpeed: flowSpeed == null ? 1 : flowSpeed
     });
     chrome.start();

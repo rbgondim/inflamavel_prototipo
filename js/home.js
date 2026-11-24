@@ -22,16 +22,7 @@ window.INF = window.INF || {};
      leva .8s (css: .carousel__track). 0 desliga a passagem automática. */
   var AUTOPLAY_MS = 5500;
 
-  /* Palavra que substitui o logo no hover do splash. ENTER_SIZE é a fração
-     da altura do canvas usada como corpo da fonte. */
-  var ENTER_LABEL = 'Entrar';
-  var ENTER_SIZE = 0.333;
 
-  /* O PNG do logo tem o acento do Á ocupando o topo (y 114–246) e as letras em
-     y 328–757, num canvas de 945. Centrado no canvas, o conjunto fica baixo em
-     relação à palavra Entrar. Este deslocamento sobe o logo para que o centro
-     das LETRAS (ignorando o acento) coincida com o centro do Entrar. */
-  var LOGO_Y_OFFSET = -93;
 
   var SX = 3.4, SY = 2.0; /* escala do campo no splash — mais largo que o do header */
 
@@ -41,7 +32,7 @@ window.INF = window.INF || {};
     this.splash = document.querySelector('.splash');
     this.bg = document.querySelector('.splash__bg');
     this.grain = document.querySelector('.splash__grain');
-    this.logoCanvas = document.querySelector('.splash__logo');
+    this.stage = document.querySelector('.splash__stage');
 
     this.track = document.querySelector('.carousel__track');
     this.slideCount = this.track ? this.track.children.length : 0;
@@ -52,11 +43,8 @@ window.INF = window.INF || {};
 
     this.cur = { x: window.innerWidth / 2, y: window.innerHeight / 2 };
     this.target = { x: this.cur.x, y: this.cur.y };
-    this.hoverLogo = false;
     this.timer = null;
-    this._hp = 0;
     this._lastBg = 0;
-    this.logoReady = false;
   }
 
   Home.prototype.init = function () {
@@ -78,12 +66,6 @@ window.INF = window.INF || {};
 
     if (this.grain) this.grain.style.opacity = String(GRAIN);
 
-    this.rosa = getComputedStyle(document.documentElement)
-      .getPropertyValue('--rosa').trim() || '#FF0D8C';
-
-    this.logoImg = new Image();
-    this.logoImg.onload = function () { self.logoReady = true; };
-    this.logoImg.src = 'assets/img/logo-white.png';
 
     this.bindSplash();
     this.bindCarousel();
@@ -119,10 +101,6 @@ window.INF = window.INF || {};
     this.splash.addEventListener('touchstart', move);
     this.splash.addEventListener('click', function () { self.enter(); });
 
-    if (this.logoCanvas) {
-      this.logoCanvas.addEventListener('mouseenter', function () { self.hoverLogo = true; });
-      this.logoCanvas.addEventListener('mouseleave', function () { self.hoverLogo = false; });
-    }
   };
 
   Home.prototype.enter = function () {
@@ -163,55 +141,6 @@ window.INF = window.INF || {};
     ctx.putImageData(img, 0, 0);
   };
 
-  /* O logo do splash é rosa chapado — a mesma cor do resto do site — recortado
-     pela silhueta do PNG. No hover a silhueta faz crossfade para ENTER_LABEL.
-     Antes aqui o logo recebia o gradiente animado amostrado na posição de tela,
-     o que custava um loop por pixel a cada quadro; com cor chapada o loop sai. */
-  Home.prototype.drawLogo = function () {
-    var cv = this.logoCanvas;
-    if (!cv || !this.logoReady) return;
-    var rect = cv.getBoundingClientRect();
-    if (!rect.width) return;
-
-    var ctx = cv.getContext('2d');
-    ctx.clearRect(0, 0, cv.width, cv.height);
-    ctx.imageSmoothingEnabled = true;
-    ctx.fillStyle = this.rosa;
-    ctx.fillRect(0, 0, cv.width, cv.height);
-
-    /* p vai de 0 (logo) a 1 (palavra), com easing exponencial */
-    var target = this.hoverLogo ? 1 : 0;
-    this._hp += (target - this._hp) * 0.16;
-    var p = this._hp;
-
-    if (!this.mask) {
-      this.mask = document.createElement('canvas');
-      this.mask.width = cv.width;
-      this.mask.height = cv.height;
-    }
-    var mc = this.mask.getContext('2d');
-    mc.clearRect(0, 0, cv.width, cv.height);
-
-    if (p < 0.995) {
-      mc.globalAlpha = 1 - p;
-      mc.drawImage(this.logoImg, 0, LOGO_Y_OFFSET, cv.width, cv.height);
-    }
-    if (p > 0.005) {
-      mc.globalAlpha = p;
-      mc.font = '700 ' + Math.round(cv.height * ENTER_SIZE) + 'px "Serial B", serif';
-      mc.textAlign = 'center';
-      mc.textBaseline = 'middle';
-      mc.fillStyle = '#fff';  /* máscara: a cor vem do preenchimento acima */
-      var m = mc.measureText(ENTER_LABEL);
-      var asc = m.actualBoundingBoxAscent || 0, desc = m.actualBoundingBoxDescent || 0;
-      mc.fillText(ENTER_LABEL, cv.width / 2, 450 + (asc - desc) / 2);
-    }
-    mc.globalAlpha = 1;
-
-    ctx.globalCompositeOperation = 'destination-in';
-    ctx.drawImage(this.mask, 0, 0);
-    ctx.globalCompositeOperation = 'source-over';
-  };
 
   /* ---------------------------------------------------------- carrossel */
 
@@ -268,7 +197,6 @@ window.INF = window.INF || {};
       var mx = this.cur.x / window.innerWidth;
       var my = this.cur.y / window.innerHeight;
       if (now - this._lastBg > 32) { this.renderBg(t, mx, my); this._lastBg = now; }
-      this.drawLogo();
     }
     requestAnimationFrame(this.loop);
   };

@@ -8,9 +8,9 @@
       entre cinco rampas a cada carregamento, então nenhuma visita é igual.
 
    2. HeatChrome — o loop que mantém --heat viva (um canvas 200x60 convertido em
-      data URL a ~18 fps), consumida pelos hovers do menu, da escolha de sede e
-      da faixa de retorno. Também pinta o logo do header, que hoje é rosa
-      chapado (--rosa) recortado pelo PNG, e não mais o gradiente animado.
+      data URL a ~18 fps), consumida pelos hovers do menu e da navegação. O logo
+      já foi pintado aqui, quadro a quadro; hoje é um SVG com máscara em css e
+      não passa mais por javascript nenhum.
 
    Este arquivo não depende de nenhuma página específica.
    ============================================================================= */
@@ -87,14 +87,13 @@ window.INF = window.INF || {};
 
   /* --------------------------------------------------------------- chrome */
 
-  /* opts: { field, logoCanvas, flowSpeed }
+  /* opts: { field, flowSpeed }
      Escala fixa 2.2 x 2.2 — é a que o layout original usa para --heat em todas
      as páginas. */
   function HeatChrome(opts) {
     opts = opts || {};
     this.field = opts.field || new HeatField();
     this.flowSpeed = opts.flowSpeed == null ? 1 : opts.flowSpeed;
-    this.logoCanvas = opts.logoCanvas || null;
     this.SX = 2.2;
     this.SY = 2.2;
 
@@ -104,15 +103,8 @@ window.INF = window.INF || {};
 
     this.mx = 0.5;
     this.my = 0.5;
-    this.logoReady = false;
     this._lastHeat = 0;
     this._raf = null;
-    this._logoDrawn = false;
-
-    /* O logo do header é rosa chapado, não o gradiente animado. A cor vem do
-       token --rosa para o CSS seguir sendo a fonte única. */
-    this.logoColor = getComputedStyle(document.documentElement)
-      .getPropertyValue('--rosa').trim() || '#FF0D8C';
 
     var self = this;
     this._onMove = function (e) {
@@ -120,11 +112,6 @@ window.INF = window.INF || {};
       self.my = e.clientY / window.innerHeight;
     };
 
-    if (this.logoCanvas) {
-      this.logoImg = new Image();
-      this.logoImg.onload = function () { self.logoReady = true; };
-      this.logoImg.src = this.logoCanvas.getAttribute('data-logo') || 'assets/img/logo-white.png';
-    }
   }
 
   HeatChrome.prototype.start = function () {
@@ -132,7 +119,6 @@ window.INF = window.INF || {};
     window.addEventListener('mousemove', this._onMove);
     var tick = function (now) {
       self.updateVar(now);
-      self.drawLogo();
       self._raf = requestAnimationFrame(tick);
     };
     this._raf = requestAnimationFrame(tick);
@@ -174,21 +160,6 @@ window.INF = window.INF || {};
     document.documentElement.style.setProperty('--heat', 'url(' + cv.toDataURL() + ')');
   };
 
-  /* logo do header = rosa chapado recortado pela silhueta do PNG.
-     Como a cor não muda mais a cada quadro, desenha uma vez só. */
-  HeatChrome.prototype.drawLogo = function () {
-    var cv = this.logoCanvas;
-    if (!cv || !this.logoReady || this._logoDrawn) return;
-    var ctx = cv.getContext('2d');
-    ctx.clearRect(0, 0, cv.width, cv.height);
-    ctx.imageSmoothingEnabled = true;
-    ctx.fillStyle = this.logoColor;
-    ctx.fillRect(0, 0, cv.width, cv.height);
-    ctx.globalCompositeOperation = 'destination-in';
-    ctx.drawImage(this.logoImg, 0, 0, cv.width, cv.height);
-    ctx.globalCompositeOperation = 'source-over';
-    this._logoDrawn = true;
-  };
 
   window.INF.PALETTES = PALETTES;
   window.INF.HeatField = HeatField;
