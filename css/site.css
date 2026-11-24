@@ -315,7 +315,6 @@ button { font: inherit; color: inherit; }
   background: var(--ink);
   color: var(--rosa);
   padding: clamp(64px, 11vh, 128px) var(--pad-x) 44px;
-  border-top: 1px solid rgba(255, 255, 255, .12);
 }
 
 .site-footer__top {
@@ -447,13 +446,15 @@ button { font: inherit; color: inherit; }
   transition: opacity .5s ease;
 }
 .splash__def-gram {
-  font-size: clamp(12px, 1.3vw, 17px);
-  letter-spacing: .1em;
+  font-size: clamp(14px, 1.6vw, 21px);
+  font-weight: 500;
+  letter-spacing: .08em;
 }
 .splash__def-sense {
-  font-size: clamp(14px, 1.6vw, 23px);
-  line-height: 1.35;
-  max-width: 26ch;
+  font-size: clamp(19px, 2.3vw, 33px);
+  font-weight: 500;
+  line-height: 1.3;
+  max-width: 24ch;
 }
 
 .splash__stage:hover .splash__logo,
@@ -594,7 +595,6 @@ button { font: inherit; color: inherit; }
 
 .project-head {
   padding: clamp(40px, 6vh, 80px) var(--pad-x) clamp(20px, 3vh, 36px);
-  border-bottom: 1px solid rgba(255, 255, 255, .12);
 }
 .back-link {
   display: inline-flex; align-items: center; gap: 10px;
@@ -633,7 +633,6 @@ button { font: inherit; color: inherit; }
   flex-wrap: wrap;
   gap: clamp(40px, 7vw, 110px);
   padding: clamp(48px, 8vh, 104px) var(--pad-x);
-  border-bottom: 1px solid rgba(255, 255, 255, .12);
 }
 .project-body__main { flex: 1 1 420px; min-width: min(100%, 420px); }
 .project-body__side {
@@ -650,7 +649,6 @@ button { font: inherit; color: inherit; }
 .project-body__block {
   margin-top: clamp(34px, 5vh, 56px);
   padding-top: 26px;
-  border-top: 1px solid rgba(255, 255, 255, .12);
 }
 .project-body .label { margin-bottom: 20px; }
 .project-body__block .label { margin-bottom: 14px; }
@@ -668,7 +666,6 @@ button { font: inherit; color: inherit; }
   display: flex; align-items: baseline; justify-content: space-between;
   gap: 20px;
   padding: calc(var(--header-h) + clamp(24px, 4vh, 56px)) var(--pad-x) clamp(24px, 3vh, 40px);
-  border-bottom: 1px solid rgba(255, 255, 255, .1);
 }
 .info-head__title {
   font-family: var(--font-display);
@@ -689,7 +686,6 @@ button { font: inherit; color: inherit; }
   flex-wrap: wrap;
   gap: var(--gap-section);
   padding: var(--pad-section) var(--pad-x);
-  border-bottom: 1px solid rgba(255, 255, 255, .1);
 }
 .info-section__label { flex: 0 0 auto; min-width: 160px; }
 .info-section__body { flex: 1 1 480px; display: flex; flex-direction: column; }
@@ -704,12 +700,12 @@ button { font: inherit; color: inherit; }
 }
 .lede--dim { color: rgba(var(--rosa-rgb), .72); }
 
+/* sem a divisória, o que separa uma entrada da outra é só o respiro */
 .row {
   display: flex;
   gap: clamp(16px, 3vw, 44px);
   align-items: baseline;
-  padding: 16px 0;
-  border-top: 1px solid rgba(255, 255, 255, .1);
+  padding: 13px 0;
 }
 .row__year { flex: 0 0 52px; font-size: 12px; font-weight: 600; letter-spacing: .1em; color: rgba(var(--rosa-rgb), .5); }
 .row__main { flex: 1 1 auto; }
@@ -744,8 +740,7 @@ button { font: inherit; color: inherit; }
 
 .impressum-row {
   display: flex; flex-wrap: wrap; gap: 16px; justify-content: space-between;
-  padding: 13px 0;
-  border-top: 1px solid rgba(255, 255, 255, .1);
+  padding: 11px 0;
 }
 .impressum-row__label {
   flex: 0 0 200px;
