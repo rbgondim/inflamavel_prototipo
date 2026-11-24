@@ -8,8 +8,8 @@
 :root {
   /* cor */
   --ink: #08080c;          /* preto das páginas escuras */
-  --ink-solid: #14141a;    /* texto sobre o creme */
-  --paper: #f4f3ef;        /* creme da página de projeto */
+  /* o creme só servia à página de projeto, que agora é escura como as outras;
+     fica como variante de teste em ?fundo=creme */
   --white: #fff;
 
   /* o gradiente "heat" é a assinatura da marca. O valor abaixo é o fallback
@@ -126,8 +126,6 @@ html, body {
 
 body { color: var(--rosa); }
 
-/* páginas claras (projeto.html) */
-body.theme-paper { background: var(--paper); color: var(--rosa); }
 
 img { max-width: 100%; display: block; }
 a { color: inherit; }
@@ -145,8 +143,6 @@ button { font: inherit; color: inherit; }
 }
 .label--sm { font-size: 11px; letter-spacing: .3em; }
 .label--strong { font-weight: 600; color: rgba(var(--rosa-rgb), .82); }
-.theme-paper .label { color: rgba(var(--rosa-rgb), .45); }
-.theme-paper .label--strong { color: rgba(var(--rosa-rgb), .82); }
 
 /* texto pintado pelo gradiente heat */
 .heat-text {
@@ -163,7 +159,6 @@ button { font: inherit; color: inherit; }
   width: 4px; height: 4px; border-radius: 999px; flex: none;
   background: rgba(255, 255, 255, .5);
 }
-.theme-paper .dot-sep { background: rgba(20, 20, 26, .4); }
 
 .hide { display: none !important; }
 
@@ -315,12 +310,6 @@ button { font: inherit; color: inherit; }
   padding: clamp(64px, 11vh, 128px) var(--pad-x) 44px;
   border-top: 1px solid rgba(255, 255, 255, .12);
 }
-.site-footer--paper {
-  background: var(--paper);
-  color: var(--rosa);
-  border-top: none;
-  padding: clamp(60px, 10vh, 120px) var(--pad-x) 44px;
-}
 
 .site-footer__top {
   display: flex;
@@ -349,7 +338,6 @@ button { font: inherit; color: inherit; }
 
 .site-footer__cols { display: flex; gap: clamp(48px, 8vw, 120px); flex-wrap: wrap; }
 .site-footer__col { display: flex; flex-direction: column; gap: 14px; }
-.site-footer--paper .site-footer__col { gap: 13px; }
 .site-footer__col .label { margin-bottom: 4px; }
 
 .site-footer__link {
@@ -361,17 +349,12 @@ button { font: inherit; color: inherit; }
   transition: color .3s;
 }
 .site-footer__link:hover { color: var(--rosa); }
-.site-footer--paper .site-footer__link { font-size: 12px; color: rgba(var(--rosa-rgb), .82); }
-.site-footer--paper .site-footer__link:hover { color: var(--rosa); }
 
 .site-footer__legal {
   margin-top: 72px;
   font-size: 11px;
   letter-spacing: .3em;
   color: rgba(var(--rosa-rgb), .5);
-}
-.site-footer--paper .site-footer__legal {
-  margin-top: 64px; font-size: 12px; letter-spacing: .28em; color: rgba(var(--rosa-rgb), .5);
 }
 
 /* =========================================================================
@@ -430,7 +413,7 @@ button { font: inherit; color: inherit; }
   cursor: pointer;
   /* o fundo do splash é um gradiente vivo e claro em boa parte do quadro; a
      sombra levanta logo e verbete sem tirar o rosa de nenhum dos dois */
-  filter: drop-shadow(0 2px 16px rgba(0, 0, 0, .5));
+  filter: drop-shadow(0 2px 18px rgba(0, 0, 0, .62));
 }
 .splash__stage > * { grid-area: 1 / 1; }
 
@@ -444,30 +427,35 @@ button { font: inherit; color: inherit; }
   user-select: none;
 }
 
+/* O verbete é a única coisa do site que não é rosa, e por um motivo medido: o
+   fundo do splash é um gradiente sorteado a cada visita, claro em boa parte do
+   quadro. Rosa sobre as áreas claras dá 1,2 de contraste. Branco com a sombra
+   do palco lê sobre claro e sobre escuro — é a única cor que serve nos dois.
+   Para trocar por preto, é esta linha e a sombra do .splash__stage. */
 .splash__def {
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  gap: .55em;
+  gap: .5em;
   text-align: center;
-  color: var(--rosa);
+  font-family: var(--font-display);
+  color: #fff;
   opacity: 0;
   transition: opacity .5s ease;
 }
 .splash__def-word {
-  font-family: var(--font-display);
   font-weight: 700;
   font-size: clamp(26px, 3.4vw, 50px);
   line-height: 1;
 }
 .splash__def-gram {
-  font-size: clamp(11px, 1.15vw, 15px);
-  letter-spacing: .12em;
+  font-size: clamp(12px, 1.3vw, 17px);
+  letter-spacing: .1em;
 }
 .splash__def-sense {
-  font-size: clamp(13px, 1.5vw, 21px);
-  line-height: 1.4;
+  font-size: clamp(14px, 1.6vw, 23px);
+  line-height: 1.35;
   max-width: 26ch;
 }
 
@@ -570,7 +558,7 @@ button { font: inherit; color: inherit; }
 /* =========================================================================
    PROJETO (detalhe) — página clara
    ========================================================================= */
-.project { position: relative; width: 100%; background: var(--paper); color: var(--rosa); }
+.project { position: relative; width: 100%; background: var(--ink); color: var(--rosa); }
 
 .hero {
   position: relative;
@@ -611,7 +599,7 @@ button { font: inherit; color: inherit; }
 
 .project-head {
   padding: clamp(40px, 6vh, 80px) var(--pad-x) clamp(20px, 3vh, 36px);
-  border-bottom: 1px solid rgba(0, 0, 0, .12);
+  border-bottom: 1px solid rgba(255, 255, 255, .12);
 }
 .back-link {
   display: inline-flex; align-items: center; gap: 10px;
@@ -650,7 +638,7 @@ button { font: inherit; color: inherit; }
   flex-wrap: wrap;
   gap: clamp(40px, 7vw, 110px);
   padding: clamp(48px, 8vh, 104px) var(--pad-x);
-  border-bottom: 1px solid rgba(0, 0, 0, .12);
+  border-bottom: 1px solid rgba(255, 255, 255, .12);
 }
 .project-body__main { flex: 1 1 420px; min-width: min(100%, 420px); }
 .project-body__side {
@@ -667,7 +655,7 @@ button { font: inherit; color: inherit; }
 .project-body__block {
   margin-top: clamp(34px, 5vh, 56px);
   padding-top: 26px;
-  border-top: 1px solid rgba(0, 0, 0, .12);
+  border-top: 1px solid rgba(255, 255, 255, .12);
 }
 .project-body .label { margin-bottom: 20px; }
 .project-body__block .label { margin-bottom: 14px; }
