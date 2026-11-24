@@ -9,7 +9,7 @@ abre no navegador e vai para o Vercel como está.
 index.html        home — splash animado + carrossel dos seis filmes
 projetos.html     listagem vertical, um filme por tela
 projeto.html      detalhe de um filme, escolhido por ?f=<slug>
-info.html         escolha de sede + quem somos, filmografia, fundadores, impressum
+info.html         quem somos, filmografia, fundadores, marcos, impressum
 
 css/site.css      folha única: tokens, componentes, responsivo
 js/heat.js        campo de ruído do gradiente da marca (compartilhado)
@@ -17,10 +17,10 @@ js/nav.js         header e alternância PT/EN (compartilhado)
 js/home.js        splash + carrossel
 js/projetos.js    revelação no scroll + amostragem de cor das imagens
 js/projeto.js     preenche a página a partir do slug + carrossel do hero
-js/info.js        porta de entrada da sede
+js/info.js        troca de sede no impressum
 
 data/films.js     os seis filmes — usado por projeto.html
-assets/img/       imagens (9)
+assets/img/       stills (8) + logo.svg + favicon
 assets/fonts/     Geist, Serial B, Serial B Blur
 
 dev-server.py     servidor local sem cache
@@ -35,7 +35,13 @@ manda é `js/heat.js`.
 
 **Texto e estrutura das páginas** → o HTML da própria página. Todo o markup está
 escrito de forma explícita, inclusive os seis cards da listagem, para que a
-página continue legível e importável no Figma.
+página continue legível.
+
+**O logo** está embutido como SVG nas páginas, com `fill="currentColor"` — por
+isso a cor vem de `color` e acompanha o token `--rosa` junto com o resto. Já foi
+canvas pintado em js e depois `mask-image`; a máscara sumia por completo em
+alguns navegadores em vez de degradar. `assets/img/logo.svg` é a fonte de onde
+os paths saíram, para regerar os embutidos se o desenho mudar.
 
 **Dados de um filme** → dois lugares, porque a listagem é markup estático e o
 detalhe é template:
@@ -131,7 +137,6 @@ git show 50b76ae:index.html > /tmp/bundle-original.html
 
 - **Voltar para a home não repete o splash.** Antes, clicar em "Home" de qualquer
   página reiniciava a animação inteira.
-- **A sede escolhida em Info persiste na sessão.**
 - **`Serial B` tem os quatro pesos em todas as páginas.** Antes, só a home
   embutia 300/400/500/700; as outras traziam apenas o 700 e caíam em fallback
   onde o layout pedia 500.
@@ -140,17 +145,21 @@ git show 50b76ae:index.html > /tmp/bundle-original.html
 
 ### O que continua igual
 
-- PT / EN é só estado visual, nada é traduzido. O gancho para quando houver
-  tradução é o evento `inf:lang`, disparado em `js/nav.js`.
+- PT / ENG / GER é só estado visual, nada é traduzido ainda. O botão troca o
+  `lang` do documento (pt-BR / en / de) e dispara `inf:lang` em `js/nav.js`, que
+  é onde a tradução entra quando os textos existirem.
+- Os oito campos do Impressum de Berlim estão em branco. São dado cadastral de
+  documento legal alemão e precisam vir da contabilidade — não se inventa.
+- Detecção automática de idioma não está implementada.
 - "Em Desenvolvimento" ainda aponta para `#`.
-- O overlay de menu em tela cheia (`.menu` nos HTMLs, `initMenu` em `js/nav.js`)
-  continua sem gatilho: o hambúrguer que o abria foi removido do header. É código
-  morto até alguém religar.
 - Instagram, Vimeo e Contato ainda apontam para `#`.
 
 ## Pendências
 
 - As imagens são fotogramas de filmes do Karim Aïnouz. Vale confirmar os direitos
   de uso antes de publicar em domínio próprio.
-- As imagens são JPEG grandes (a maior tem 1 MB). Converter para WebP/AVIF cortaria
-  uns 70% sem perda visível.
+- As imagens são JPEG grandes (5,4 MB somados). Existem WebP das mesmas oito,
+  nas mesmas dimensões, em `_SITE/IMAGENS` fora do repo: 1,5 MB, 72% a menos.
+- O favicon ainda é `logo-white.png`, o wordmark antigo esticado num quadrado.
+- O overlay de menu em tela cheia segue sem gatilho e com o maior `font-size`
+  do css (124px), sem nunca aparecer na tela.
