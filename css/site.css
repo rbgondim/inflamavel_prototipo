@@ -200,11 +200,13 @@ button { font: inherit; color: inherit; }
   /* a barra não tem fundo: o conteúdo passa por baixo dela */
   background: transparent;
   padding: 14px var(--pad-x);
-  /* A barra passa por cima de fotograma, e a cor do texto muda a cada load.
-     Sobre um still claro nenhum dos três lê — a sombra é o que segura logo e
-     nav ali sem devolver a faixa preta que foi tirada de propósito. Mesma
-     solução do .splash__stage. */
-  filter: drop-shadow(0 1px 10px rgba(0, 0, 0, .55));
+  /* Sem sombra, de propósito. Houve aqui um drop-shadow para segurar logo e
+     nav sobre fotograma claro, e ele não funcionou: a barra é um elemento
+     largo e quase vazio, então a sombra não acompanhava a letra, empoçava
+     numa mancha retangular atrás do lockup. É diferente do .splash__stage,
+     que é do tamanho da tinta e por isso pode ter sombra sem virar caixa.
+     Quem segura a leitura aqui é a cor do load — e o amarelo, que é a que
+     mede melhor, volta a cada três. */
   transition: transform .45s var(--ease-reveal);
 }
 .site-header.is-hidden { transform: translateY(-115%); }
