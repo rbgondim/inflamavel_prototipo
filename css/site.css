@@ -443,12 +443,15 @@ button { font: inherit; color: inherit; }
   /* Logo e verbete entraram no rodízio de cor, e sobre este fundo isso é caro:
      o gradiente é sorteado a cada visita e fica claro em boa parte do quadro,
      onde um acento sozinho dá 1,2 de contraste. Quem paga a conta é esta
-     sombra, agora em duas camadas e não uma. A de 2px é halo: acompanha a
-     letra e separa a tinta do que estiver atrás dela, inclusive branco. A de
-     22px é peso: destaca o lockup inteiro do fundo. Juntas seguram as três
-     cores sem pôr placa atrás do logo nem lavar o gradiente. */
-  filter: drop-shadow(0 0 2px rgba(0, 0, 0, .6))
-          drop-shadow(0 2px 22px rgba(0, 0, 0, .72));
+     sombra.
+
+     Só raio grande. Uma primeira versão tinha um halo de 2px colado na letra,
+     que pela medida ajudava e na tela virava contorno preto — raio curto não
+     lê como sombra, lê como borda. Duas camadas largas dão a mesma densidade
+     sem desenhar nada: a de 14px escurece perto da tinta, a de 30px apoia o
+     lockup inteiro, e nenhuma das duas tem onde formar aresta. */
+  filter: drop-shadow(0 1px 14px rgba(0, 0, 0, .62))
+          drop-shadow(0 2px 30px rgba(0, 0, 0, .68));
 }
 .splash__stage > * { grid-area: 1 / 1; }
 
@@ -476,11 +479,11 @@ button { font: inherit; color: inherit; }
   color: var(--rosa);
   /* A sombra do palco basta para o logo, que é tinta grossa, e não basta aqui:
      a linha gramatical tem 21px de serifa clara e sumia dentro das áreas
-     claras do gradiente. Esta é a mesma ideia em escala de texto — halo de 1px
-     colado na letra, mais um borrão largo para apoiar. */
-  text-shadow: 0 0 1px rgba(0, 0, 0, .8),
-               0 0 4px rgba(0, 0, 0, .65),
-               0 1px 14px rgba(0, 0, 0, .8);
+     claras do gradiente. Mesma regra do palco — raio grande só, porque numa
+     letra fina o contorno aparece antes ainda. O raio menor aqui é 8px e não
+     14px porque a mancha de texto é pequena: a sombra tem que caber nela. */
+  text-shadow: 0 0 8px rgba(0, 0, 0, .78),
+               0 1px 20px rgba(0, 0, 0, .78);
   opacity: 0;
   transition: opacity .5s ease;
 }
