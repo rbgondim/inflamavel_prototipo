@@ -99,10 +99,6 @@
 
      ?texto=amarelo | rosa | vermelho   força uma das três e não mexe no rodízio
 
-   O logo do splash está de fora: é branco fixo. Sobre o gradiente vivo nenhum
-   dos três acentos lê, e uma marca que troca de cor a cada visita é marca
-   insegura. Ver .splash__logo.
-
    Isso funciona porque o site inteiro aponta para um token só. Os usos com
    opacidade vão por color-mix e não por rgba(): rgba() pediria um segundo
    token com os canais soltos, e dois tokens para uma cor é um para esquecer
@@ -444,26 +440,31 @@ button { font: inherit; color: inherit; }
   display: grid;
   width: min(620px, 72vw);
   cursor: pointer;
-  /* o fundo do splash é um gradiente vivo e claro em boa parte do quadro; a
-     sombra levanta logo e verbete sem tirar o rosa de nenhum dos dois */
-  filter: drop-shadow(0 2px 18px rgba(0, 0, 0, .62));
+  /* Logo e verbete entraram no rodízio de cor, e sobre este fundo isso é caro:
+     o gradiente é sorteado a cada visita e fica claro em boa parte do quadro,
+     onde um acento sozinho dá 1,2 de contraste. Quem paga a conta é esta
+     sombra, agora em duas camadas e não uma. A de 2px é halo: acompanha a
+     letra e separa a tinta do que estiver atrás dela, inclusive branco. A de
+     22px é peso: destaca o lockup inteiro do fundo. Juntas seguram as três
+     cores sem pôr placa atrás do logo nem lavar o gradiente. */
+  filter: drop-shadow(0 0 2px rgba(0, 0, 0, .6))
+          drop-shadow(0 2px 22px rgba(0, 0, 0, .72));
 }
 .splash__stage > * { grid-area: 1 / 1; }
 
 .splash__logo {
   /* 3.5 é a proporção da tinta do lockup */
   height: calc(min(620px, 72vw) / 3.5);
-  /* Branco, fora do ciclo de cor, pelo mesmo motivo medido do verbete abaixo:
-     o fundo é um gradiente sorteado a cada visita, claro em boa parte do
-     quadro, e nenhum dos três acentos lê sobre claro — o rosa dá 1,2 ali.
-     Branco com a sombra do palco lê sobre claro e sobre escuro. */
-  color: #fff;
+  /* A abertura entra na cor do load, como o resto do site: é a primeira coisa
+     que se vê, e é onde a cor da visita se apresenta. O que segura a leitura
+     aqui é a sombra do palco, não a cor. */
+  color: var(--rosa);
   transition: opacity .5s ease;
   user-select: none;
 }
 
-/* Branco junto com o logo, e pela mesma medida. Para trocar os dois por preto,
-   é esta linha, a do .splash__logo e a sombra do .splash__stage. */
+/* Na cor do load junto com o logo. Para voltar qualquer um dos dois ao branco,
+   é esta linha ou a do .splash__logo. */
 .splash__def {
   display: flex;
   flex-direction: column;
@@ -472,7 +473,14 @@ button { font: inherit; color: inherit; }
   gap: .6em;
   text-align: center;
   font-family: var(--font-display);
-  color: #fff;
+  color: var(--rosa);
+  /* A sombra do palco basta para o logo, que é tinta grossa, e não basta aqui:
+     a linha gramatical tem 21px de serifa clara e sumia dentro das áreas
+     claras do gradiente. Esta é a mesma ideia em escala de texto — halo de 1px
+     colado na letra, mais um borrão largo para apoiar. */
+  text-shadow: 0 0 1px rgba(0, 0, 0, .8),
+               0 0 4px rgba(0, 0, 0, .65),
+               0 1px 14px rgba(0, 0, 0, .8);
   opacity: 0;
   transition: opacity .5s ease;
 }
