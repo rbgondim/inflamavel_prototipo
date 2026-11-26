@@ -442,18 +442,21 @@ button { font: inherit; color: inherit; }
   display: grid;
   width: min(620px, 72vw);
   cursor: pointer;
-  /* Logo e verbete entraram no rodízio de cor, e sobre este fundo isso é caro:
-     o gradiente é sorteado a cada visita e fica claro em boa parte do quadro,
-     onde um acento sozinho dá 1,2 de contraste. Quem paga a conta é esta
-     sombra.
+  /* Sem sombra, de propósito, e esta é a lição mais cara do arquivo.
 
-     Só raio grande. Uma primeira versão tinha um halo de 2px colado na letra,
-     que pela medida ajudava e na tela virava contorno preto — raio curto não
-     lê como sombra, lê como borda. Duas camadas largas dão a mesma densidade
-     sem desenhar nada: a de 14px escurece perto da tinta, a de 30px apoia o
-     lockup inteiro, e nenhuma das duas tem onde formar aresta. */
-  filter: drop-shadow(0 1px 14px rgba(0, 0, 0, .62))
-          drop-shadow(0 2px 30px rgba(0, 0, 0, .68));
+     Houve aqui um drop-shadow preto, desde antes do rodízio de cor, para
+     levantar o lockup do gradiente. Enquanto o logo era branco, passava. Em
+     rosa sobre um quadro claro — amarelo-esverdeado, ciano — a mancha preta
+     não lê como sombra: lê como sujeira cinza em volta da letra, porque não
+     há relação de luz nenhuma entre preto e um fundo daquela clareza.
+
+     Tentei consertar com a forma da sombra, primeiro tirando o raio curto que
+     virava contorno, depois espalhando em duas camadas largas. Não era a
+     forma, era a cor: preto não tem o que fazer sobre esse gradiente.
+
+     A tinta se segura por matiz e não por luz — magenta saturado sobre verde
+     claro separa, mesmo com contraste de luminância baixo. É assim que a
+     marca funciona em cartaz, e é assim que ela fica limpa aqui. */
 }
 .splash__stage > * { grid-area: 1 / 1; }
 
@@ -479,13 +482,11 @@ button { font: inherit; color: inherit; }
   text-align: center;
   font-family: var(--font-display);
   color: var(--rosa);
-  /* A sombra do palco basta para o logo, que é tinta grossa, e não basta aqui:
-     a linha gramatical tem 21px de serifa clara e sumia dentro das áreas
-     claras do gradiente. Mesma regra do palco — raio grande só, porque numa
-     letra fina o contorno aparece antes ainda. O raio menor aqui é 8px e não
-     14px porque a mancha de texto é pequena: a sombra tem que caber nela. */
-  text-shadow: 0 0 8px rgba(0, 0, 0, .78),
-               0 1px 20px rgba(0, 0, 0, .78);
+  /* Sem sombra, pelo mesmo motivo do palco acima: preto sobre gradiente claro
+     é sujeira, não apoio. Esta é a parte frágil do splash — 21px de serifa
+     clara têm menos tinta que o lockup para se segurar por matiz. Se o
+     verbete ficar fraco em alguma paleta, o caminho é peso ou corpo de letra,
+     nunca mais preto atrás. */
   opacity: 0;
   transition: opacity .5s ease;
 }
