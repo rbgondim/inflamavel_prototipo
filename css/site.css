@@ -809,18 +809,11 @@ button { font: inherit; color: inherit; }
 }
 .impressum-row__value { flex: 1 1 300px; font-size: 16px; color: color-mix(in srgb, var(--rosa) 90%, transparent); }
 
-.info-footer__bottom {
-  margin-top: clamp(48px, 7vh, 90px);
-  display: flex; flex-wrap: wrap; gap: 20px;
-  justify-content: flex-end; align-items: flex-end;
-}
-.info-footer__links {
-  display: flex; gap: 26px;
-  font-size: 12px; letter-spacing: .2em; text-transform: uppercase;
-}
-.info-footer__links a { color: color-mix(in srgb, var(--rosa) 70%, transparent); text-decoration: none; }
-.info-footer__links a:hover { color: var(--rosa); }
-.info-footer__legal { margin-top: 40px; font-size: 12px; letter-spacing: .28em; color: color-mix(in srgb, var(--rosa) 50%, transparent); }
+/* O info tinha um rodapé próprio — linha de links em vez de coluna, outro
+   corpo de letra, outra linha legal. Agora usa o mesmo das outras três; só o
+   respiro depois do impressum é local, porque ali não há o padding do
+   .site-footer para abrir o espaço. */
+.info-footer .site-footer__top { margin-top: clamp(48px, 7vh, 90px); }
 
 /* =========================================================================
    RESPONSIVO
