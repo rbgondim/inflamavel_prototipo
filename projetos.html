@@ -45,7 +45,7 @@ d.setAttribute("data-texto",t);})();</script>
      na página individual. Os dados também existem em data/films.js, que
      alimenta essa página — ao editar um filme, atualize os dois lugares.
      ======================================================= -->
-<main>
+<main class="films">
 
   <a class="film" href="projeto.html?f=motel-destino">
     <img class="film__img" src="assets/img/motel-destino3.jpg" alt="Motel Destino">
@@ -138,6 +138,20 @@ d.setAttribute("data-texto",t);})();</script>
   </a>
 
 </main>
+
+<div class="films__nav">
+  <button class="films__arrow" data-dir="-1" type="button" aria-label="Filme anterior">
+    <svg viewBox="0 0 40 88" fill="none" aria-hidden="true">
+      <polyline points="34,6 8,44 34,82" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></polyline>
+    </svg>
+  </button>
+  <button class="films__arrow" data-dir="1" type="button" aria-label="Próximo filme">
+    <svg viewBox="0 0 40 88" fill="none" aria-hidden="true">
+      <polyline points="6,6 32,44 6,82" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></polyline>
+    </svg>
+  </button>
+</div>
+
 
 <!-- ======================= footer ======================= -->
 <footer class="site-footer">

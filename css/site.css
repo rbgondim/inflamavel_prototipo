@@ -53,37 +53,40 @@
   /* Altura do lockup inteiro (INFLAMÁVEL + CINEMA + ®). O SVG vem com o
      viewBox colado na tinta, então este número é logo de verdade na tela, não
      caixa com margem. A palavra INFLAMÁVEL ocupa metade dessa altura. */
-  --logo-h: clamp(52px, 6vw, 88px);
+  --logo-h: clamp(57px, 6.6vw, 97px);
 
   /* o header flutua, então quem começa com texto precisa descer por conta */
   --header-h: calc(var(--logo-h) + 28px);
 
-  /* Título de tema — as sedes na Info, e as seções que vierem depois.
-     Teto calculado para a caixa alta ficar abaixo da do logo: a 1440 o logo dá
-     86px de lockup, logo 43px de INFLAMÁVEL, e 58px de Serial B dão 40,6. */
-  --fs-tema: clamp(34px, 4vw, 58px);
+  /* Nome de filme ou série — na listagem, na página do projeto e, desde
+     novembro, nas sedes da Info. É o único tamanho de título do site.
 
-  /* Nome de filme ou série, na listagem e na página do projeto. Estes NUNCA
-     passam do logo: ao lado da marca, quem manda é a marca.
+     Medido contra o logo e não arbitrado: a 1024 a caixa alta do INFLAMÁVEL
+     dá 46px; este valor põe a do título em 16px, pouco mais de um terço.
+     Antes dava 22px, e mesmo assim parecia grande ao lado da marca — é o
+     peso da Serial B, que ocupa mais do que mede. */
+  --fs-titulo-filme: clamp(20px, 2.25vw, 33px);
 
-     O valor sai de conta, não do olho. O PNG do logo é 55% espaço vazio (letras
-     em y 328–757 de 945), então rende 0,454 da altura que o css pede; a caixa
-     alta da Serial B rende 0,70 do font-size. Para a caixa alta ficar em 80% da
-     letra do logo: 0,8 x 0,454 / 0,70 = 0,52 da altura do logo, hoje
-     clamp(50px, 5.7vw, 84px). */
-  --fs-titulo-filme: clamp(26px, 3vw, 44px);
+  /* Texto corrido: um corpo e uma entrelinha para o site inteiro. Antes eram
+     16px em quatro lugares e um clamp(20,2vw,28) no "quem somos", com
+     entrelinhas de 1,5, 1,55 e 1,6 conforme o bloco. */
+  --fs-texto: 16px;
+  --lh-texto: 1.4;
+  --lh-titulo: .92;
 
   /* ritmo */
-  /* Entreletra da nav e dos idiomas, tirada do próprio CINEMA do logo.
+  /* Entreletra de toda a caixa alta pequena do site, tirada do CINEMA do logo.
 
      Medida: no svg o vão entre letras do CINEMA é 0,30 da altura da caixa
      alta. Na Geist a 13px a caixa alta dá 9,23px, e o vão nasce em 2,13px com
      entreletra zero — a letra já vem com seu respiro. Para chegar a 0,30 o
      vão precisa ser 2,81px, então sobram 0,68px de acréscimo: .052em.
 
-     Vinha de .26em, que dava 0,60 — o dobro do lockup. Era o que fazia a
-     barra parecer legenda de outro projeto ao lado da marca. */
-  --track-header: .052em;
+     Começou valendo só para a nav, onde vinha de .26em e dava 0,60 — o dobro
+     do lockup. Agora vale para todos os micro-labels: ficha de filme, rótulos,
+     impressum, rodapé. Eram oito valores diferentes entre .1em e .3em, cada um
+     escolhido no olho e nenhum conversando com a marca. */
+  --track-alta: .052em;
 
   --pad-x: clamp(16px, 3vw, 40px);
   --pad-x-wide: clamp(20px, 3.6vw, 52px);
@@ -162,7 +165,10 @@ html, body {
   -webkit-font-smoothing: antialiased;
 }
 
-body { color: var(--rosa); }
+/* A entrelinha padrão do site mora aqui, e não em cada bloco de texto: antes
+   não havia base nenhuma e cada regra escolhia a sua, de 1,5 a 1,6. Quem
+   precisa de outra — os títulos, a nav — pede explicitamente. */
+body { color: var(--rosa); line-height: var(--lh-texto); }
 
 
 img { max-width: 100%; display: block; }
@@ -175,11 +181,11 @@ button { font: inherit; color: inherit; }
 .label {
   font-size: 12px;
   font-weight: 500;
-  letter-spacing: .28em;
+  letter-spacing: var(--track-alta);
   text-transform: uppercase;
   color: color-mix(in srgb, var(--rosa) 45%, transparent);
 }
-.label--sm { font-size: 11px; letter-spacing: .3em; }
+.label--sm { font-size: 11px; }
 .label--strong { font-weight: 600; color: color-mix(in srgb, var(--rosa) 82%, transparent); }
 
 /* texto pintado pelo gradiente heat */
@@ -256,7 +262,7 @@ button { font: inherit; color: inherit; }
   font-size: 13px;
   font-weight: 400;
   line-height: 1;
-  letter-spacing: var(--track-header);
+  letter-spacing: var(--track-alta);
   text-transform: uppercase;
 }
 .nav__link {
@@ -275,7 +281,7 @@ button { font: inherit; color: inherit; }
   font-size: 13px;
   font-weight: 400;
   line-height: 1;
-  letter-spacing: var(--track-header);
+  letter-spacing: var(--track-alta);
   text-transform: uppercase;
 }
 .lang__btn {
@@ -283,6 +289,7 @@ button { font: inherit; color: inherit; }
   cursor: pointer;
   color: color-mix(in srgb, var(--rosa) 45%, transparent);
   letter-spacing: inherit;
+  text-transform: inherit;
   transition: color .3s;
 }
 .lang__btn.is-on { color: var(--rosa); }
@@ -313,7 +320,7 @@ button { font: inherit; color: inherit; }
   border-radius: 999px; padding: 7px 14px; cursor: pointer;
   color: color-mix(in srgb, var(--rosa) 75%, transparent);
   font-family: var(--font-label);
-  font-size: 11px; letter-spacing: .2em; text-transform: uppercase;
+  font-size: 11px; letter-spacing: var(--track-alta); text-transform: uppercase;
   transition: color .3s, border-color .3s;
 }
 .pill-btn:hover { color: var(--rosa); border-color: rgba(255, 255, 255, .75); }
@@ -350,7 +357,7 @@ button { font: inherit; color: inherit; }
   flex-wrap: wrap;
   gap: 20px;
   font-size: 11px;
-  letter-spacing: .24em;
+  letter-spacing: var(--track-alta);
   text-transform: uppercase;
   color: color-mix(in srgb, var(--rosa) 55%, transparent);
 }
@@ -383,7 +390,7 @@ button { font: inherit; color: inherit; }
 
 .site-footer__link {
   font-size: 13px;
-  letter-spacing: .14em;
+  letter-spacing: var(--track-alta);
   text-transform: uppercase;
   color: color-mix(in srgb, var(--rosa) 82%, transparent);
   text-decoration: none;
@@ -393,7 +400,7 @@ button { font: inherit; color: inherit; }
 
 .site-footer__legal {
   font-size: 11px;
-  letter-spacing: .3em;
+  letter-spacing: var(--track-alta);
   color: color-mix(in srgb, var(--rosa) 50%, transparent);
 }
 
@@ -546,13 +553,66 @@ button { font: inherit; color: inherit; }
 }
 
 /* =========================================================================
-   PROJETOS (listagem)
+   PROJETOS (listagem) — carrossel horizontal
+
+   Era uma pilha vertical: seis cards de altura de tela, um embaixo do outro,
+   percorridos rolando a página. Virou trilho lateral.
+
+   Quem rola é o próprio <main>, com scroll-snap: cada card trava na borda e
+   não existe meio-termo entre dois filmes. Sem js para a rolagem — o
+   navegador faz o atrito, a inércia e o toque do celular melhor do que
+   qualquer laço nosso faria, e o teclado anda sozinho porque cada card é um
+   link que recebe foco.
+
+   O js entra só para as setas e para saber qual card está na frente. Elas
+   existem porque rolagem lateral não se anuncia: o trackpad e o dedo
+   descobrem, o mouse de roda não.
    ========================================================================= */
+.films {
+  display: flex;
+  overflow-x: auto;
+  overflow-y: hidden;
+  scroll-snap-type: x mandatory;
+  scroll-behavior: smooth;
+  scrollbar-width: none;
+  overscroll-behavior-x: contain;
+}
+.films::-webkit-scrollbar { display: none; }
+
+/* Fixas, e não dentro do trilho: o trilho rola na horizontal, e qualquer
+   coisa ancorada nele andaria junto com os filmes. Somem quando a página
+   desce para o rodapé, onde não há mais o que percorrer. */
+.films__nav {
+  position: fixed;
+  right: var(--pad-x);
+  bottom: clamp(20px, 3.5vh, 40px);
+  z-index: 25;
+  display: flex;
+  gap: 2px;
+  transition: opacity .35s ease;
+}
+.films__nav.is-off { opacity: 0; pointer-events: none; }
+.films__arrow {
+  pointer-events: auto;
+  background: none; border: none; padding: 10px 14px; cursor: pointer;
+  color: color-mix(in srgb, var(--rosa) 70%, transparent);
+  transition: color .3s, transform .3s;
+}
+.films__arrow svg { width: 15px; height: auto; display: block; }
+.films__arrow:hover { color: var(--rosa); }
+.films__arrow[disabled] { opacity: .25; cursor: default; }
+
 .film {
   position: relative;
   display: block;
-  width: 100%;
-  height: clamp(540px, 92vh, 1080px);
+  /* 100vw e não 100%: dentro de um flex em rolagem, 100% seria a largura do
+     conteúdo, não a da tela */
+  flex: 0 0 100vw;
+  /* svh e não vh: no celular o 100vh conta a barra do navegador que some ao
+     rolar, e o card ficaria mais alto que a tela desde o primeiro quadro */
+  height: 100vh;
+  height: 100svh;
+  scroll-snap-align: start;
   overflow: hidden;
   text-decoration: none;
   color: var(--rosa);
@@ -577,18 +637,17 @@ button { font: inherit; color: inherit; }
   bottom: clamp(34px, 6vh, 72px);
 }
 .film__meta {
-  font-size: 11px; font-weight: 600; letter-spacing: .3em;
+  font-size: 11px; font-weight: 600; letter-spacing: var(--track-alta);
   text-transform: uppercase; color: color-mix(in srgb, var(--rosa) 72%, transparent);
-  /* a folga é acima: a ficha vem depois do título e da barra de acento.
-     Quando ela ficava acima do título, esta margem era margin-bottom e passou
-     a encostar na barra quando a ordem inverteu. */
-  margin-top: 16px;
+  /* Perto do título de propósito: título e ficha são a mesma informação, e
+     34px de respiro entre os dois os liam como dois blocos separados. */
+  margin-top: 9px;
   display: flex; gap: 14px; align-items: center; flex-wrap: wrap;
 }
 .film__title {
   font-family: var(--font-display);
   font-weight: 700;
-  line-height: .92;
+  line-height: var(--lh-titulo);
   font-size: var(--fs-titulo-filme);
   text-transform: uppercase;
   letter-spacing: -.01em;
@@ -598,7 +657,7 @@ button { font: inherit; color: inherit; }
 .film__accent {
   height: 2px;
   width: 0;
-  margin-top: 18px;
+  margin-top: 10px;
   background: linear-gradient(90deg, var(--heat-1), var(--heat-2), var(--heat-3), var(--heat-4), var(--heat-5));
   transition: width .6s var(--ease-reveal);
 }
@@ -606,7 +665,12 @@ button { font: inherit; color: inherit; }
 
 
 /* =========================================================================
-   PROJETO (detalhe) — página clara
+   PROJETO (detalhe)
+
+   O link "← Projetos" e a .accent-bar saíram em novembro: a volta já está no
+   header, que é fixo e não sai da tela, e a barra de gradiente sob o título
+   era régua colorida sem função num bloco que já tem título, ficha e sinopse
+   em ordem. A página também deixou de ser clara — é escura como as outras.
    ========================================================================= */
 .project { position: relative; width: 100%; background: var(--ink); color: var(--rosa); }
 
@@ -650,38 +714,21 @@ button { font: inherit; color: inherit; }
 .project-head {
   padding: clamp(40px, 6vh, 80px) var(--pad-x) clamp(20px, 3vh, 36px);
 }
-.back-link {
-  display: inline-flex; align-items: center; gap: 10px;
-  font-size: 12px; font-weight: 500; letter-spacing: .26em; text-transform: uppercase;
-  color: color-mix(in srgb, var(--rosa) 55%, transparent);
-  text-decoration: none;
-  margin-bottom: 26px;
-}
-.back-link:hover { color: var(--rosa); }
-
 .project-head__meta {
-  font-size: 12px; font-weight: 500; letter-spacing: .26em; text-transform: uppercase;
-  color: color-mix(in srgb, var(--rosa) 55%, transparent);
-  margin-bottom: 18px;
+  font-size: 11px; font-weight: 600; letter-spacing: var(--track-alta); text-transform: uppercase;
+  color: color-mix(in srgb, var(--rosa) 72%, transparent);
+  margin-bottom: 9px;
   display: flex; gap: 14px; align-items: center; flex-wrap: wrap;
 }
 .project-head__title {
   font-family: var(--font-display);
   font-weight: 700;
-  line-height: .9;
+  line-height: var(--lh-titulo);
   font-size: var(--fs-titulo-filme);
   text-transform: uppercase;
   letter-spacing: -.01em;
   text-wrap: balance;
 }
-.accent-bar {
-  height: 3px;
-  width: clamp(80px, 10vw, 170px);
-  margin-top: 22px;
-  border-radius: 2px;
-  background: linear-gradient(90deg, var(--heat-1), var(--heat-2), var(--heat-4), var(--heat-5));
-}
-
 .project-body {
   display: flex;
   flex-wrap: wrap;
@@ -695,8 +742,8 @@ button { font: inherit; color: inherit; }
   display: flex; flex-direction: column; gap: 24px;
 }
 .project-body__text {
-  font-size: 16px;
-  line-height: 1.6;
+  font-size: var(--fs-texto);
+  line-height: var(--lh-texto);
   color: color-mix(in srgb, var(--rosa) 90%, transparent);
   max-width: 56ch;
 }
@@ -709,28 +756,24 @@ button { font: inherit; color: inherit; }
 
 .spec { display: flex; flex-direction: column; gap: 6px; }
 .spec .label { margin-bottom: 0; }
-.spec__value { font-size: 16px; line-height: 1.55; color: var(--rosa); }
+.spec__value { font-size: var(--fs-texto); line-height: var(--lh-texto); color: var(--rosa); }
 .spec-row { display: flex; gap: 36px; flex-wrap: wrap; }
 
 /* =========================================================================
    INFO
    ========================================================================= */
 
+/* Sobrou só a assinatura à direita: o "Fortaleza / Berlim" que ocupava a
+   esquerda saiu, porque as duas cidades já aparecem logo abaixo como seletor
+   do impressum — e ali elas fazem alguma coisa. */
 .info-head {
-  display: flex; align-items: baseline; justify-content: space-between;
+  display: flex; align-items: baseline; justify-content: flex-end;
   gap: 20px;
   padding: calc(var(--header-h) + clamp(24px, 4vh, 56px)) var(--pad-x) clamp(24px, 3vh, 40px);
 }
-.info-head__title {
-  font-family: var(--font-display);
-  font-weight: 700;
-  font-size: var(--fs-tema);
-  line-height: .95;
-  letter-spacing: -.01em;
-}
 .info-head__right {
   display: flex; align-items: baseline; gap: 22px;
-  font-size: 12px; font-weight: 500; letter-spacing: .28em; text-transform: uppercase;
+  font-size: 12px; font-weight: 500; letter-spacing: var(--track-alta); text-transform: uppercase;
   color: color-mix(in srgb, var(--rosa) 55%, transparent);
   white-space: nowrap;
 }
@@ -747,9 +790,10 @@ button { font: inherit; color: inherit; }
 .info-section__body--founders { gap: clamp(40px, 6vh, 72px); }
 
 .lede {
-  font-size: clamp(20px, 2vw, 28px);
-  line-height: 1.5;
-  font-weight: 300;
+  font-size: var(--fs-texto);
+  line-height: var(--lh-texto);
+  /* era 300 porque o corpo era 20–28px; a 16px esse peso fica anêmico */
+  font-weight: 400;
   color: color-mix(in srgb, var(--rosa) 95%, transparent);
 }
 .lede--dim { color: color-mix(in srgb, var(--rosa) 72%, transparent); }
@@ -761,58 +805,72 @@ button { font: inherit; color: inherit; }
   align-items: baseline;
   padding: 13px 0;
 }
-.row__year { flex: 0 0 52px; font-size: 12px; font-weight: 600; letter-spacing: .1em; color: color-mix(in srgb, var(--rosa) 50%, transparent); }
+.row__year { flex: 0 0 52px; font-size: 12px; font-weight: 600; letter-spacing: var(--track-alta); color: color-mix(in srgb, var(--rosa) 50%, transparent); }
 .row__main { flex: 1 1 auto; }
-.row__title { font-size: 16px; font-weight: 500; }
+.row__title { font-size: var(--fs-texto); font-weight: 500; }
 .row__role {
   margin-top: 5px;
-  font-size: 12px; letter-spacing: .14em; text-transform: uppercase;
+  font-size: 12px; letter-spacing: var(--track-alta); text-transform: uppercase;
   color: color-mix(in srgb, var(--rosa) 50%, transparent);
 }
 .row__type {
   flex: 0 0 auto;
-  font-size: 12px; letter-spacing: .2em; text-transform: uppercase;
+  font-size: 12px; letter-spacing: var(--track-alta); text-transform: uppercase;
   color: color-mix(in srgb, var(--rosa) 55%, transparent);
   text-align: right;
 }
 
 .row--marco { max-width: 70ch; }
-.row--marco .row__year { font-size: 16px; color: var(--rosa); }
-.row--marco .row__text { flex: 1 1 auto; font-size: 16px; line-height: 1.55; color: color-mix(in srgb, var(--rosa) 85%, transparent); }
+.row--marco .row__year { font-size: var(--fs-texto); color: var(--rosa); }
+.row--marco .row__text { flex: 1 1 auto; font-size: var(--fs-texto); line-height: var(--lh-texto); color: color-mix(in srgb, var(--rosa) 85%, transparent); }
 
 .founder { max-width: 60ch; }
-.founder__name { font-size: 16px; font-weight: 600; }
+.founder__name { font-size: var(--fs-texto); font-weight: 600; }
 .founder__role {
   margin-top: 6px; margin-bottom: 16px;
-  font-size: 12px; letter-spacing: .2em; text-transform: uppercase;
+  font-size: 12px; letter-spacing: var(--track-alta); text-transform: uppercase;
   color: color-mix(in srgb, var(--rosa) 55%, transparent);
 }
-.founder__bio { font-size: 16px; line-height: 1.6; color: color-mix(in srgb, var(--rosa) 82%, transparent); }
+.founder__bio { font-size: var(--fs-texto); line-height: var(--lh-texto); color: color-mix(in srgb, var(--rosa) 82%, transparent); }
 
 .info-footer { padding: var(--pad-section) var(--pad-x) 44px; }
 .info-footer__grid { display: flex; flex-wrap: wrap; gap: var(--gap-section); }
 
-/* Seletor de sede do impressum. Mesma lógica visual do PT / ENG / GER: o
-   ativo em cheio, o inativo esmaecido, separados por barra. */
+/* Seletor de sede do impressum.
+
+   FORTALEZA e BERLIM eram duas coisas na página: um título decorativo no topo
+   e este seletor, em 13px, lá embaixo. O título saiu e o seletor herdou o
+   tamanho dele — são as mesmas duas palavras, e só uma das duas versões
+   fazia alguma coisa quando clicada.
+
+   Continua a lógica visual do PT / ENG / GER: o ativo em cheio, o inativo
+   esmaecido, barra no meio. O que mudou é a escala. */
 .sede-switch {
   display: flex;
-  align-items: center;
-  gap: 10px;
-  margin-bottom: 18px;
-  font-family: var(--font-label);
-  font-size: 13px;
-  letter-spacing: .22em;
+  align-items: baseline;
+  gap: 14px;
+  margin-bottom: 28px;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: var(--fs-titulo-filme);
+  line-height: var(--lh-titulo);
+  letter-spacing: -.01em;
   text-transform: uppercase;
 }
 .sede-switch__btn {
   background: none; border: none; padding: 0; margin: 0;
   cursor: pointer;
-  color: color-mix(in srgb, var(--rosa) 45%, transparent);
+  color: color-mix(in srgb, var(--rosa) 32%, transparent);
+  font: inherit;
   letter-spacing: inherit;
+  /* o navegador põe text-transform: none em todo <button>, e regra do ua
+     ganha de herança — sem esta linha o seletor sai em caixa mista */
+  text-transform: inherit;
   transition: color .3s;
 }
+.sede-switch__btn:hover { color: color-mix(in srgb, var(--rosa) 70%, transparent); }
 .sede-switch__btn.is-on { color: var(--rosa); }
-.sede-switch__sep { color: color-mix(in srgb, var(--rosa) 40%, transparent); }
+.sede-switch__sep { color: color-mix(in srgb, var(--rosa) 24%, transparent); }
 
 [data-sede-painel][hidden] { display: none; }
 
@@ -828,10 +886,10 @@ button { font: inherit; color: inherit; }
 }
 .impressum-row__label {
   flex: 0 0 200px;
-  font-size: 12px; letter-spacing: .14em; text-transform: uppercase;
+  font-size: 12px; letter-spacing: var(--track-alta); text-transform: uppercase;
   color: color-mix(in srgb, var(--rosa) 50%, transparent);
 }
-.impressum-row__value { flex: 1 1 300px; font-size: 16px; color: color-mix(in srgb, var(--rosa) 90%, transparent); }
+.impressum-row__value { flex: 1 1 300px; font-size: var(--fs-texto); color: color-mix(in srgb, var(--rosa) 90%, transparent); }
 
 /* O info tinha um rodapé próprio — linha de links em vez de coluna, outro
    corpo de letra, outra linha legal. Agora usa o mesmo das outras três; só o
@@ -852,7 +910,6 @@ button { font: inherit; color: inherit; }
   .nav { gap: 18px; font-size: 12px; }
   .lang { font-size: 12px; }
 
-  .film { height: clamp(420px, 78vh, 720px); }
 
   .info-head { flex-direction: column; align-items: flex-start; }
   .info-head__right { white-space: normal; flex-wrap: wrap; gap: 14px; }
