@@ -13,7 +13,7 @@
    css e trocaria na cara de quem está olhando. ?texto= força uma. Ver css/site.css */
 (function(){var p=new URLSearchParams(location.search),d=document.documentElement;
 var f=p.get("fundo");if(f)d.setAttribute("data-fundo",f);
-var t=p.get("texto"),c=["amarelo","rosa","vermelho"];
+var t=p.get("texto"),c=["amarelo","vermelho"];
 if(!t){var i;try{i=parseInt(localStorage.getItem("inf:cor"),10);if(isNaN(i))i=-1;i=(i+1)%c.length;localStorage.setItem("inf:cor",i);}
 catch(e){i=Math.floor(Math.random()*c.length);}t=c[i];}
 d.setAttribute("data-texto",t);})();</script>
@@ -142,6 +142,7 @@ d.setAttribute("data-texto",t);})();</script>
 <!-- ======================= footer ======================= -->
 <footer class="site-footer">
   <div class="site-footer__top">
+    <div class="site-footer__legal">© CINEMA INFLAMÁVEL 2026 — FORTALEZA / BERLIM</div>
     <div class="site-footer__cols">
       <div class="site-footer__col">
         <a class="site-footer__link" href="#">Instagram</a>
@@ -150,7 +151,6 @@ d.setAttribute("data-texto",t);})();</script>
       </div>
     </div>
   </div>
-  <div class="site-footer__legal">© CINEMA INFLAMÁVEL 2026 — FORTALEZA / BERLIM</div>
 </footer>
 
 <!-- ======================= menu ======================= -->

@@ -26,9 +26,9 @@
      é cor de marca em movimento, aqui é cor que precisa segurar contraste
      sobre o preto.
 
-     O nome continua --rosa por histórico: hoje o valor é um dos três acentos,
-     sorteado em rodízio a cada load, e o rosa é só um deles. Renomear
-     custaria trinta linhas de diff para não mudar nada na tela.
+     O nome continua --rosa por histórico, e hoje é um nome mentiroso: o rosa
+     saiu do rodízio e sobraram amarelo e vermelho. Renomear custaria trinta
+     linhas de diff para não mudar nada na tela.
 
      O valor aqui é só a rede: na prática o script do <head> sobrescreve a
      cada load (ver "cor do load" abaixo). Amarelo porque é o que mede melhor
@@ -74,6 +74,17 @@
   --fs-titulo-filme: clamp(26px, 3vw, 44px);
 
   /* ritmo */
+  /* Entreletra da nav e dos idiomas, tirada do próprio CINEMA do logo.
+
+     Medida: no svg o vão entre letras do CINEMA é 0,30 da altura da caixa
+     alta. Na Geist a 13px a caixa alta dá 9,23px, e o vão nasce em 2,13px com
+     entreletra zero — a letra já vem com seu respiro. Para chegar a 0,30 o
+     vão precisa ser 2,81px, então sobram 0,68px de acréscimo: .052em.
+
+     Vinha de .26em, que dava 0,60 — o dobro do lockup. Era o que fazia a
+     barra parecer legenda de outro projeto ao lado da marca. */
+  --track-header: .052em;
+
   --pad-x: clamp(16px, 3vw, 40px);
   --pad-x-wide: clamp(20px, 3.6vw, 52px);
   --gap-section: clamp(24px, 3.5vw, 60px);
@@ -87,8 +98,12 @@
 
 /* ---------- cor do load ----------
    A cor de texto do site não é uma escolha fixa: cada carregamento chega numa
-   das três. Amarelo, rosa, vermelho, em rodízio — nunca a mesma duas vezes
+   das duas. Amarelo e vermelho, alternando — nunca a mesma duas vezes
    seguidas, que é o que separa "mudou" de "não mudou".
+
+   O rosa saiu. Era a terceira, e era a que não se segurava: sobre o gradiente
+   do splash caía na família do próprio fundo, e sobre os stills escuros dos
+   filmes sumia. Amarelo e vermelho são as duas que leem em cima de imagem.
 
    Quem decide é o script no <head> de cada página, antes da folha de estilo:
    ele avança o rodízio e põe data-texto no <html>. Precisa ser ali e inline;
@@ -97,7 +112,7 @@
 
    O valor do :root lá em cima é o que fica se o script não rodar.
 
-     ?texto=amarelo | rosa | vermelho   força uma das três e não mexe no rodízio
+     ?texto=amarelo | vermelho   força uma das duas e não mexe no rodízio
 
    Isso funciona porque o site inteiro aponta para um token só. Os usos com
    opacidade vão por color-mix e não por rgba(): rgba() pediria um segundo
@@ -105,7 +120,6 @@
    de trocar. */
 
 :root[data-texto="amarelo"]  { --rosa: #FFD60A; }
-:root[data-texto="rosa"]     { --rosa: #FF0D8C; }
 :root[data-texto="vermelho"] { --rosa: #FF2E2E; }
 
 /* fundos, para comparar: ?fundo=grafite | noite | creme */
@@ -194,7 +208,11 @@ button { font: inherit; color: inherit; }
   right: 0;
   z-index: 30;
   display: flex;
-  align-items: center;
+  /* Nav e idiomas sentam na linha de base do CINEMA, não no meio do logo.
+     Sai de graça: o viewBox do svg foi recortado na tinta, então a borda de
+     baixo dele é exatamente a base do CINEMA, e é dali que o flex tira a
+     linha de base de um item sem texto. */
+  align-items: baseline;
   justify-content: space-between;
   gap: clamp(20px, 4vw, 64px);
   /* a barra não tem fundo: o conteúdo passa por baixo dela */
@@ -228,7 +246,7 @@ button { font: inherit; color: inherit; }
 }
 .logo-mark { height: 100%; width: auto; display: block; }
 
-.site-header__right { display: flex; align-items: center; gap: clamp(20px, 3.2vw, 48px); }
+.site-header__right { display: flex; align-items: baseline; gap: clamp(20px, 3.2vw, 48px); }
 
 .nav {
   display: flex;
@@ -237,7 +255,8 @@ button { font: inherit; color: inherit; }
   font-family: var(--font-label);
   font-size: 13px;
   font-weight: 400;
-  letter-spacing: .26em;
+  line-height: 1;
+  letter-spacing: var(--track-header);
   text-transform: uppercase;
 }
 .nav__link {
@@ -255,7 +274,8 @@ button { font: inherit; color: inherit; }
   font-family: var(--font-label);
   font-size: 13px;
   font-weight: 400;
-  letter-spacing: .22em;
+  line-height: 1;
+  letter-spacing: var(--track-header);
   text-transform: uppercase;
 }
 .lang__btn {
@@ -345,12 +365,17 @@ button { font: inherit; color: inherit; }
   padding: clamp(64px, 11vh, 128px) var(--pad-x) 44px;
 }
 
+/* Assinatura à esquerda, redes à direita, na mesma linha de piso. A legal
+   ficava sozinha numa linha abaixo, e com a navegação fora do rodapé sobrava
+   uma coluna solta de um lado e uma frase solta do outro, sem relação. O
+   flex-end é o que amarra as duas: a assinatura cai na linha do último link,
+   não na do primeiro, então o rodapé termina numa borda só. */
 .site-footer__top {
   display: flex;
   flex-wrap: wrap;
-  gap: 56px;
-  justify-content: flex-end;
-  align-items: flex-start;
+  gap: 32px 56px;
+  justify-content: space-between;
+  align-items: flex-end;
 }
 .site-footer__cols { display: flex; gap: clamp(48px, 8vw, 120px); flex-wrap: wrap; }
 .site-footer__col { display: flex; flex-direction: column; gap: 14px; }
@@ -367,7 +392,6 @@ button { font: inherit; color: inherit; }
 .site-footer__link:hover { color: var(--rosa); }
 
 .site-footer__legal {
-  margin-top: 72px;
   font-size: 11px;
   letter-spacing: .3em;
   color: color-mix(in srgb, var(--rosa) 50%, transparent);
@@ -439,9 +463,9 @@ button { font: inherit; color: inherit; }
      virava contorno, depois espalhando em duas camadas largas. Não era a
      forma, era a cor: preto não tem o que fazer sobre esse gradiente.
 
-     A tinta se segura por matiz e não por luz — magenta saturado sobre verde
-     claro separa, mesmo com contraste de luminância baixo. É assim que a
-     marca funciona em cartaz, e é assim que ela fica limpa aqui. */
+     A tinta se segura por matiz e não por luz — amarelo ou vermelho saturado
+     sobre o gradiente separa mesmo com contraste de luminância baixo. É assim
+     que a marca funciona em cartaz, e é assim que ela fica limpa aqui. */
 }
 .splash__stage > * { grid-area: 1 / 1; }
 
@@ -824,7 +848,8 @@ button { font: inherit; color: inherit; }
   /* sem hambúrguer, a nav é a única navegação — ela quebra em vez de sumir */
   .site-header { flex-wrap: wrap; gap: 12px; }
   .site-header__right { gap: 16px; flex-wrap: wrap; }
-  .nav { gap: 18px; font-size: 12px; letter-spacing: .16em; }
+  /* a entreletra vem do token: a medida do CINEMA vale em qualquer largura */
+  .nav { gap: 18px; font-size: 12px; }
   .lang { font-size: 12px; }
 
   .film { height: clamp(420px, 78vh, 720px); }
@@ -838,8 +863,7 @@ button { font: inherit; color: inherit; }
 
   .impressum-row__label { flex: 1 1 100%; }
 
-  .site-footer__top { gap: 36px; }
-  .site-footer__legal { margin-top: 48px; }
+  .site-footer__top { gap: 28px 36px; }
 
 }
 
