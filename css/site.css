@@ -252,12 +252,15 @@ button { font: inherit; color: inherit; }
 }
 .logo-mark { height: 100%; width: auto; display: block; }
 
-.site-header__right { display: flex; align-items: baseline; gap: clamp(20px, 3.2vw, 48px); }
+/* Os dois vãos do lado direito andam juntos e mantêm a proporção: o que
+   separa a nav dos idiomas é um quarto maior que o que separa FILMES de
+   INFO, senão os cinco itens viram uma fileira só. */
+.site-header__right { display: flex; align-items: baseline; gap: clamp(16px, 2.1vw, 32px); }
 
 .nav {
   display: flex;
   align-items: center;
-  gap: clamp(18px, 2.6vw, 40px);
+  gap: clamp(13px, 1.7vw, 26px);
   font-family: var(--font-label);
   font-size: 13px;
   font-weight: 400;
@@ -276,7 +279,7 @@ button { font: inherit; color: inherit; }
 .lang {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 6px;
   font-family: var(--font-label);
   font-size: 13px;
   font-weight: 400;
@@ -905,9 +908,9 @@ button { font: inherit; color: inherit; }
 @media (max-width: 720px) {
   /* sem hambúrguer, a nav é a única navegação — ela quebra em vez de sumir */
   .site-header { flex-wrap: wrap; gap: 12px; }
-  .site-header__right { gap: 16px; flex-wrap: wrap; }
+  .site-header__right { gap: 14px; flex-wrap: wrap; }
   /* a entreletra vem do token: a medida do CINEMA vale em qualquer largura */
-  .nav { gap: 18px; font-size: 12px; }
+  .nav { gap: 13px; font-size: 12px; }
   .lang { font-size: 12px; }
 
 
